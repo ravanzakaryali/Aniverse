@@ -3,7 +3,7 @@ using Aniverse.Domain.Entities.Identity;
 
 namespace Aniverse.Domain.Entities
 {
-    public class Post : IEntity<Guid>
+    public class Post : BaseEntity<Guid>
     {
         public string Content { get; set; }
         public string UserId { get; set; } 

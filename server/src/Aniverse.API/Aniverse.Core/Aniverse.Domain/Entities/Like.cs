@@ -4,7 +4,7 @@ using Aniverse.Domain.Entities.Identity;
 
 namespace Aniverse.Domain.Entities
 {
-    public class Like : IEntity<Guid>
+    public class Like : BaseEntity<Guid>
     {
         public string UserId { get; set; }
         public AppUser User { get; set; }
