@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Aniverse.Domain\Aniverse.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
