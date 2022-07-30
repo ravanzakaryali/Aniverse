@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Aniverse.Domain.Entities.Common;
 
 namespace Aniverse.Domain.Entities
 {
-    public class HasTag
+    public class HasTag : IEntity<Guid>
     {
+        public string Name { get; set; }
+        public ICollection<Post> Posts { get; set; }
     }
 }
