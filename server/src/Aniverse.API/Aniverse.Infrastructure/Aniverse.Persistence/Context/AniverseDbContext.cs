@@ -2,6 +2,7 @@
 using Aniverse.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Reflection;
 
 namespace Aniverse.Persistence.Context
 {
@@ -17,6 +18,11 @@ namespace Aniverse.Persistence.Context
         public DbSet<Post> Posts { get; set; }
         public DbSet<SavePost> SavePosts { get; set; }
         public DbSet<Share> Shares { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
+        }
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             IEnumerable<EntityEntry> entries = ChangeTracker.Entries();

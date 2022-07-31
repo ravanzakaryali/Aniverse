@@ -10,7 +10,6 @@ namespace Aniverse.Persistence.Configuration
         {
             builder.Property(sp => sp.CreatedDate).HasDefaultValueSql("GETUTCDATE()");
             builder.Property(sp => sp.Id).HasDefaultValueSql("GETID()");
-
         }
     }
 }

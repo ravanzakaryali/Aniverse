@@ -15,5 +15,7 @@ namespace Aniverse.Domain.Entities
         public ICollection<Like> Likes { get; set; } 
         public ICollection<Share> Shares { get; set; }
         public ICollection<SavePost> SavePosts { get; set; }
+        public ICollection<PostImages> PostImages { get; set; }
+        public ICollection<PostVideos> PostVideos { get; set; }
     }
 }
