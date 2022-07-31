@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aniverse.Persistence", "Ani
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aniverse.API", "Aniverse.Presentation\Aniverse.API\Aniverse.API.csproj", "{3BC32BF0-03DE-49D7-83D3-F690E5E926C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aniverse.Services", "Aniverse.Presentation\Aniverse.Services\Aniverse.Services.csproj", "{E269F6D1-5131-4CB3-BAEB-1019A104B440}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{3BC32BF0-03DE-49D7-83D3-F690E5E926C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BC32BF0-03DE-49D7-83D3-F690E5E926C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BC32BF0-03DE-49D7-83D3-F690E5E926C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E269F6D1-5131-4CB3-BAEB-1019A104B440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E269F6D1-5131-4CB3-BAEB-1019A104B440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E269F6D1-5131-4CB3-BAEB-1019A104B440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E269F6D1-5131-4CB3-BAEB-1019A104B440}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{5D8C34D2-9D63-49E3-B083-891EDA9BDD05} = {FB77EC08-2AC7-442F-9A45-AA092498E2BA}
 		{AC527214-AE8C-49D0-BE62-DDE44094C736} = {FB77EC08-2AC7-442F-9A45-AA092498E2BA}
 		{3BC32BF0-03DE-49D7-83D3-F690E5E926C6} = {5721997C-C0EF-42F4-A63F-091A720A783C}
+		{E269F6D1-5131-4CB3-BAEB-1019A104B440} = {5721997C-C0EF-42F4-A63F-091A720A783C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F55E95CC-4226-440A-B71B-9E57E592A93D}
