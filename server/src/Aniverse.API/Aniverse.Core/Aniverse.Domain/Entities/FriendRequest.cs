@@ -4,7 +4,7 @@ using Aniverse.Domain.Entities.Identity;
 
 namespace Aniverse.Domain.Entities
 {
-    public class FriendRequest : BaseEntity<Guid>
+    public class FriendRequest : BaseEntity<string>
     {
         public string UserId { get; set; }
         public AppUser User { get; set; }

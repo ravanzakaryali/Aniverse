@@ -3,12 +3,12 @@ using Aniverse.Domain.Entities.Identity;
 
 namespace Aniverse.Domain.Entities
 {
-    public class SavePost : IBaseEntity<Guid>, ICreatedDate
+    public class SavePost : IBaseEntity<string>, ICreatedDate
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string UserId { get; set; }
         public AppUser User { get; set; }
-        public Guid PostId { get; set; }
+        public string PostId { get; set; }
         public Post Post { get; set; }
         public DateTime CreatedDate { get ;set ;}
     }

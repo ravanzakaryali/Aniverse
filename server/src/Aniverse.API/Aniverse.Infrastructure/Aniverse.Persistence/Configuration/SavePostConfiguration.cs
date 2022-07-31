@@ -8,8 +8,8 @@ namespace Aniverse.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<SavePost> builder)
         {
-            builder.Property(sp => sp.CreatedDate).HasDefaultValueSql("GETUTCDATE()");
-            builder.Property(sp => sp.Id).HasDefaultValueSql("GETID()");
+            builder.Property(sp => sp.CreatedDate).HasDefaultValueSql("CURRENT_DATE");
+            builder.Property(sp => sp.Id).HasIdentityOptions<string>();
         }
     }
 }

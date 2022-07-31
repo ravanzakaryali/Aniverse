@@ -9,8 +9,8 @@ namespace Aniverse.Persistence.Configuration
         public void Configure(EntityTypeBuilder<HasTag> builder)
         {
             builder.Property(ht=>ht.Name).IsRequired().HasMaxLength(64);
-            builder.Property(ht => ht.CreatedDate).HasDefaultValueSql("GETUTCDATE()");
-            builder.Property(ht => ht.Id).HasDefaultValueSql("GETID()");
+            builder.Property(ht => ht.CreatedDate).HasDefaultValueSql("CURRENT_DATE");
+            builder.Property(ht => ht.Id).HasIdentityOptions<string>();
         }
     }
 }

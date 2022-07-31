@@ -8,8 +8,8 @@ namespace Aniverse.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<FriendRequest> builder)
         {
-            builder.Property(fr => fr.Id).HasDefaultValueSql("NEWID()");
-            builder.Property(fr => fr.CreatedDate).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(fr => fr.Id).HasIdentityOptions<string>();
+            builder.Property(fr => fr.CreatedDate).HasDefaultValueSql("CURRENT_DATE");
             builder.Property(fr => fr.DeclinedCount).HasDefaultValue(0);
         }
     }

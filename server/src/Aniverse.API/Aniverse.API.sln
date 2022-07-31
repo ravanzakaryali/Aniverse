@@ -9,15 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aniverse.Infrastructure", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aniverse.Presentation", "Aniverse.Presentation", "{5721997C-C0EF-42F4-A63F-091A720A783C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aniverse.Domain", "Aniverse.Core\Aniverse.Domain\Aniverse.Domain.csproj", "{452FE424-F9EC-45A4-B8B0-BF3CB0EAC7F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aniverse.Domain", "Aniverse.Core\Aniverse.Domain\Aniverse.Domain.csproj", "{452FE424-F9EC-45A4-B8B0-BF3CB0EAC7F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aniverse.Application", "Aniverse.Core\Aniverse.Application\Aniverse.Application.csproj", "{FDC06E15-7CF1-47D6-BFED-ED605FD6D145}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aniverse.Application", "Aniverse.Core\Aniverse.Application\Aniverse.Application.csproj", "{FDC06E15-7CF1-47D6-BFED-ED605FD6D145}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anivese.Infrastructure", "Aniverse.Infrastructure\Anivese.Infrastructure\Anivese.Infrastructure.csproj", "{5D8C34D2-9D63-49E3-B083-891EDA9BDD05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anivese.Infrastructure", "Aniverse.Infrastructure\Anivese.Infrastructure\Anivese.Infrastructure.csproj", "{5D8C34D2-9D63-49E3-B083-891EDA9BDD05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aniverse.Persistence", "Aniverse.Infrastructure\Aniverse.Persistence\Aniverse.Persistence.csproj", "{AC527214-AE8C-49D0-BE62-DDE44094C736}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aniverse.Persistence", "Aniverse.Infrastructure\Aniverse.Persistence\Aniverse.Persistence.csproj", "{AC527214-AE8C-49D0-BE62-DDE44094C736}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aniverse.API", "Aniverse.Presentation\Aniverse.API\Aniverse.API.csproj", "{3BC32BF0-03DE-49D7-83D3-F690E5E926C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aniverse.API", "Aniverse.Presentation\Aniverse.API\Aniverse.API.csproj", "{3BC32BF0-03DE-49D7-83D3-F690E5E926C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

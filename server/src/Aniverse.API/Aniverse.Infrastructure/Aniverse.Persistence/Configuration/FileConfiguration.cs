@@ -7,8 +7,8 @@ namespace Aniverse.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<Domain.Entities.File> builder)
         {
-            builder.Property(s => s.Id).HasDefaultValueSql("GETID()");
-            builder.Property(s => s.CreatedDate).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(s => s.Id).HasIdentityOptions<string>();
+            builder.Property(s => s.CreatedDate).HasDefaultValueSql("CURRENT_DATE");
         }
     }
 }
