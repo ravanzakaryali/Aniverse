@@ -18,6 +18,9 @@ namespace Aniverse.Persistence.Context
         public DbSet<Post> Posts { get; set; }
         public DbSet<SavePost> SavePosts { get; set; }
         public DbSet<Share> Shares { get; set; }
+        public DbSet<Domain.Entities.File> Files { get; set; }
+        public DbSet<PostImages> PostImages { get; set; }
+        public DbSet<PostVideos> PostVideos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
