@@ -8,7 +8,7 @@ namespace Aniverse.Domain.Entities.Identity
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public bool IsDeleted { get; set; }
-        public string Bio { get; set; }
+        public string? Bio { get; set; }
         public Gender Gender { get; set; }
         public DateTime Birthday { get; set; }
         public DateTime RegisterDate { get; set; }
