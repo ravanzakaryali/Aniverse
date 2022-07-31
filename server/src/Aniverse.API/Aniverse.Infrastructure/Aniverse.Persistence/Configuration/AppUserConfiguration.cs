@@ -12,6 +12,10 @@ namespace Aniverse.Persistence.Configuration
             builder.Property(u => u.Lastname).HasDefaultValue("XXX");
             builder.Property(u => u.Bio).HasMaxLength(350);
             builder.Property(u => u.RegisterDate).HasDefaultValueSql("GETUTCDATE()");
+            builder
+                .HasMany(u => u.FriendRequests)
+                .WithOne(fr => fr.User)
+                .HasForeignKey(fr => fr.UserId);
         }
     }
 }
