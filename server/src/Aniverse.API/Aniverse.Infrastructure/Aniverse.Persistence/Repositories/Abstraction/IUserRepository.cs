@@ -3,7 +3,7 @@ using Aniverse.Persistence.Repositories.Abstraction.Base;
 
 namespace Aniverse.Persistence.Repositories.Abstraction
 {
-    public interface IUserRepository : IBaseRepository<AppUser, string>
+    public interface IUserRepository : IRepository<AppUser, string>
     {
     }
 }
