@@ -9,8 +9,6 @@ namespace Aniverse.Persistence.Configuration
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
             builder.Property(c=>c.Id).HasDefaultValueSql("NEWID()");
-            builder.Property(c => c.PostId).IsRequired();
-            builder.Property(c=>c.UserId).IsRequired();
             builder.Property(c => c.CreatedDate).HasDefaultValueSql("GETUTCDATE()");
         }
     }
