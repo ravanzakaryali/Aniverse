@@ -11,7 +11,7 @@ namespace Aniverse.Persistence.Configuration
             builder.Property(u => u.Firstname).IsRequired();
             builder.Property(u => u.Lastname).HasDefaultValue("XXX");
             builder.Property(u => u.Bio).HasMaxLength(350);
-            builder.Property(u => u.RegisterDate).HasDefaultValueSql("UTCGETDATE()");
+            builder.Property(u => u.RegisterDate).HasDefaultValueSql("GETUTCDATE()");
         }
     }
 }
