@@ -1,6 +1,6 @@
 ﻿namespace Aniverse.Application.DTOs.Auth
 {
-    public class RegisterReponse
+    public class RegisterResponse
     {
         public bool Succeeded { get; set; }
         public string Message { get; set; }

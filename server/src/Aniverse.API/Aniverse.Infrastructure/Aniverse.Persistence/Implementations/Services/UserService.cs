@@ -2,6 +2,7 @@
 using Aniverse.Application.DTOs.Auth;
 using Aniverse.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Aniverse.Application.Extensions;
 
 namespace Aniverse.Persistence.Implementations.Services
 {
@@ -14,9 +15,23 @@ namespace Aniverse.Persistence.Implementations.Services
             _userManager = userManager;
         }
 
-        public Task<RegisterReponse> CreateAsync(Register model)
+        public async Task<RegisterResponse> CreateAsync(Register model)
         {
-            throw new NotImplementedException();
+            IdentityResult result = await _userManager.CreateAsync(new()
+            {
+                Firstname = model.Firtname,
+                Lastname = model.Firtname,
+                Email = model.Email,
+                UserName = model.Email.CharacterRegulatory(),
+            });
+            RegisterResponse response = new() { Succeeded = result.Succeeded };
+            if (result.Succeeded)
+                response.Message = "Please confirm email";
+            else
+                foreach (var error in result.Errors)
+                    response.Message += $"{error.Code} - {error.Description}\n";
+
+            return response;
         }
 
         public Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate)

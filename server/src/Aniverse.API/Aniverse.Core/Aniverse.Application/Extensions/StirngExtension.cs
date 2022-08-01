@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace Aniverse.Application.Extensions
 {
-    public class StirngExtension
+    public static class StirngExtension
     {
-        public static string CharacterRegulatory(string name, int maxLenght = 30)
+        public static string CharacterRegulatory(this string name, int maxLenght = 30)
         {
             int i = name.IndexOfAny(new char[] { 'ş', 'ç', 'ö', 'ğ', 'ü', 'ı', 'ə' });
             string newName = name.ToLower();
