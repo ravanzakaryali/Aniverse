@@ -1,7 +1,6 @@
-﻿using Aniverse.Domain.Entities.Common;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace Aniverse.Persistence.Repositories.Abstraction.Base
+namespace Aniverse.Core.Repositories.Abstraction.Base
 {
     public interface IRepository<TEntity, TKey> where TEntity : class, new()
     {

@@ -3,11 +3,17 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Aniverse.Domain\Aniverse.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Abstractions\Services\" />
+    <Folder Include="DTOs\Animal\" />
+    <Folder Include="DTOs\User\" />
   </ItemGroup>
 
 </Project>

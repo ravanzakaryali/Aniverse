@@ -1,9 +1,9 @@
-﻿using Aniverse.Persistence.Context;
-using Aniverse.Persistence.Repositories.Abstraction.Base;
+﻿using Aniverse.Core.Repositories.Abstraction.Base;
+using Aniverse.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Aniverse.Persistence.Repositories.Implementations.Base
+namespace Aniverse.Persistence.Implementations.Repositories.Base
 {
     public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, new()
     {

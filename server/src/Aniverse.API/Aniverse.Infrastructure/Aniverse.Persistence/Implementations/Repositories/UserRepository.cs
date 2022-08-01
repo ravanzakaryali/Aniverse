@@ -1,10 +1,10 @@
-﻿using Aniverse.Domain.Entities.Identity;
+﻿using Aniverse.Core.Repositories.Abstraction;
+using Aniverse.Domain.Entities.Identity;
 using Aniverse.Persistence.Context;
-using Aniverse.Persistence.Repositories.Abstraction;
-using Aniverse.Persistence.Repositories.Implementations.Base;
+using Aniverse.Persistence.Implementations.Repositories.Base;
 using Microsoft.AspNetCore.Identity;
 
-namespace Aniverse.Persistence.Repositories.Implementations
+namespace Aniverse.Persistence.Implementations.Repositories
 {
     public class UserRepository : Repository<AppUser, string>, IUserRepository
     {

@@ -1,9 +1,9 @@
-﻿using Aniverse.Domain.Entities;
+﻿using Aniverse.Core.Repositories.Abstraction;
+using Aniverse.Domain.Entities;
 using Aniverse.Persistence.Context;
-using Aniverse.Persistence.Repositories.Abstraction;
-using Aniverse.Persistence.Repositories.Implementations.Base;
+using Aniverse.Persistence.Implementations.Repositories.Base;
 
-namespace Aniverse.Persistence.Repositories.Implementations
+namespace Aniverse.Persistence.Implementations.Repositories
 {
     public class PostRepository : Repository<Post, string>, IPostRepository
     {
