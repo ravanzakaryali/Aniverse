@@ -8,7 +8,7 @@ namespace Aniverse.Persistence.Implementations.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<AppUser> _userManager;
+        private UserManager<AppUser> _userManager;
 
         public UserService(UserManager<AppUser> userManager)
         {
@@ -34,9 +34,18 @@ namespace Aniverse.Persistence.Implementations.Services
             return response;
         }
 
-        public Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate)
+        public async Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate)
         {
-            throw new NotImplementedException();
+            if(user != null)
+            {
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenEndDate = accessTokenDate.AddSeconds(addOnAccessTokenDate);
+                await _userManager.UpdateAsync(user);
+            }
+            else
+            {
+                throw new ArgumentException("User not found");
+            }
         }
     }
 }
