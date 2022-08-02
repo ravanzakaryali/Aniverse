@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Aniverse.Services\Aniverse.Services.csproj" />
+    <ProjectReference Include="..\..\Aniverse.Infrastructure\Aniverse.Persistence\Aniverse.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
