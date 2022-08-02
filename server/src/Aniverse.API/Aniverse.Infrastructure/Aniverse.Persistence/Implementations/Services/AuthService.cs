@@ -35,7 +35,7 @@ namespace Aniverse.Persistence.Implementations.Services
             SignInResult signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
             if (!signInResult.Succeeded)
                 throw new Exception("Password and Username is wrong");
-            Token token = _tokenHandler.CreateAccessToken(accessTokenLifeTime);
+            Token token = await _tokenHandler.CreateAccessTokenAsync(user);
             await _userService.UpdateRefreshToken(user.RefreshToken, user, token.Expiration, accessTokenLifeTime);
             return token;
         }
@@ -45,7 +45,7 @@ namespace Aniverse.Persistence.Implementations.Services
             AppUser? user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
             if (user is null)
                 throw new NotImplementedException();
-            Token token = _tokenHandler.CreateAccessToken(15);
+            Token token = await _tokenHandler.CreateAccessTokenAsync(user);
             await _userService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 15);
             return token;
         }

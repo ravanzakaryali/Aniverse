@@ -10,7 +10,7 @@ namespace Aniverse.Domain.Entities.Identity
         public bool IsDeleted { get; set; }
         public string? Bio { get; set; }
         public string? RefreshToken { get; set; }
-        public DateTime? RefreshTokenEndDate { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
         public Gender Gender { get; set; }
         public DateTime Birthday { get; set; }
         public DateTime RegisterDate { get; set; }
