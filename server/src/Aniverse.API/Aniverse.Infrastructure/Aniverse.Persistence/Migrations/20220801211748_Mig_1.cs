@@ -5,10 +5,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Aniverse.Persistence.Migrations
 {
-    public partial class Int_Mig : Migration
+    public partial class Mig_1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:uuid-ossp", ",,");
+
             migrationBuilder.CreateTable(
                 name: "AppUser",
                 columns: table => new
@@ -18,9 +21,11 @@ namespace Aniverse.Persistence.Migrations
                     Lastname = table.Column<string>(type: "text", nullable: true, defaultValue: "XXX"),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     Bio = table.Column<string>(type: "character varying(350)", maxLength: 350, nullable: true),
+                    RefreshToken = table.Column<string>(type: "text", nullable: true),
+                    RefreshTokenEndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Gender = table.Column<int>(type: "integer", nullable: false),
                     Birthday = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
+                    RegisterDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UserName = table.Column<string>(type: "text", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
@@ -45,45 +50,45 @@ namespace Aniverse.Persistence.Migrations
                 name: "Files",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
+                    identifier = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     Storage = table.Column<string>(type: "text", nullable: true),
                     Discriminator = table.Column<string>(type: "text", nullable: false),
                     Lenght = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Files", x => x.Id);
+                    table.PrimaryKey("PK_Files", x => x.identifier);
                 });
 
             migrationBuilder.CreateTable(
                 name: "HasTags",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    identifier = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HasTags", x => x.Id);
+                    table.PrimaryKey("PK_HasTags", x => x.identifier);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Animals",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    identifier = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     Bio = table.Column<string>(type: "character varying(350)", maxLength: 350, nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Animals", x => x.Id);
+                    table.PrimaryKey("PK_Animals", x => x.identifier);
                     table.ForeignKey(
                         name: "FK_Animals_AppUser_UserId",
                         column: x => x.UserId,
@@ -95,17 +100,17 @@ namespace Aniverse.Persistence.Migrations
                 name: "FriendRequests",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    identifier = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     FriendId = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     DeclinedCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FriendRequests", x => x.Id);
+                    table.PrimaryKey("PK_FriendRequests", x => x.identifier);
                     table.ForeignKey(
                         name: "FK_FriendRequests_AppUser_FriendId",
                         column: x => x.FriendId,
@@ -122,9 +127,9 @@ namespace Aniverse.Persistence.Migrations
                 name: "AnimalFollows",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    AnimalId = table.Column<string>(type: "text", nullable: true),
+                    AnimalId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -134,7 +139,8 @@ namespace Aniverse.Persistence.Migrations
                         name: "FK_AnimalFollows_Animals_AnimalId",
                         column: x => x.AnimalId,
                         principalTable: "Animals",
-                        principalColumn: "Id");
+                        principalColumn: "identifier",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AnimalFollows_AppUser_UserId",
                         column: x => x.UserId,
@@ -146,22 +152,23 @@ namespace Aniverse.Persistence.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    identifier = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Content = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    AnimalId = table.Column<string>(type: "text", nullable: true),
+                    AnimalId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.identifier);
                     table.ForeignKey(
                         name: "FK_Posts_Animals_AnimalId",
                         column: x => x.AnimalId,
                         principalTable: "Animals",
-                        principalColumn: "Id");
+                        principalColumn: "identifier",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Posts_AppUser_UserId",
                         column: x => x.UserId,
@@ -173,18 +180,18 @@ namespace Aniverse.Persistence.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    identifier = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Content = table.Column<string>(type: "text", nullable: true),
-                    PostId = table.Column<string>(type: "text", nullable: true),
+                    PostId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    ReplyCommentsId = table.Column<string>(type: "text", nullable: true),
-                    CommentId = table.Column<string>(type: "text", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
+                    ReplyCommentsId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CommentId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_Comments", x => x.identifier);
                     table.ForeignKey(
                         name: "FK_Comments_AppUser_UserId",
                         column: x => x.UserId,
@@ -194,20 +201,21 @@ namespace Aniverse.Persistence.Migrations
                         name: "FK_Comments_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
-                        principalColumn: "Id");
+                        principalColumn: "identifier");
                     table.ForeignKey(
                         name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "identifier",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "HasTagPost",
                 columns: table => new
                 {
-                    HasTagsId = table.Column<string>(type: "text", nullable: false),
-                    PostsId = table.Column<string>(type: "text", nullable: false)
+                    HasTagsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PostsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -216,13 +224,13 @@ namespace Aniverse.Persistence.Migrations
                         name: "FK_HasTagPost_HasTags_HasTagsId",
                         column: x => x.HasTagsId,
                         principalTable: "HasTags",
-                        principalColumn: "Id",
+                        principalColumn: "identifier",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_HasTagPost_Posts_PostsId",
                         column: x => x.PostsId,
                         principalTable: "Posts",
-                        principalColumn: "Id",
+                        principalColumn: "identifier",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -230,16 +238,16 @@ namespace Aniverse.Persistence.Migrations
                 name: "Likes",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    identifier = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    PostId = table.Column<string>(type: "text", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
+                    PostId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Likes", x => x.Id);
+                    table.PrimaryKey("PK_Likes", x => x.identifier);
                     table.ForeignKey(
                         name: "FK_Likes_AppUser_UserId",
                         column: x => x.UserId,
@@ -249,15 +257,16 @@ namespace Aniverse.Persistence.Migrations
                         name: "FK_Likes_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "identifier",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "PostPostImages",
                 columns: table => new
                 {
-                    PostImagesId = table.Column<string>(type: "text", nullable: false),
-                    PostsId = table.Column<string>(type: "text", nullable: false)
+                    PostImagesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PostsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -266,13 +275,13 @@ namespace Aniverse.Persistence.Migrations
                         name: "FK_PostPostImages_Files_PostImagesId",
                         column: x => x.PostImagesId,
                         principalTable: "Files",
-                        principalColumn: "Id",
+                        principalColumn: "identifier",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PostPostImages_Posts_PostsId",
                         column: x => x.PostsId,
                         principalTable: "Posts",
-                        principalColumn: "Id",
+                        principalColumn: "identifier",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -280,8 +289,8 @@ namespace Aniverse.Persistence.Migrations
                 name: "PostPostVideos",
                 columns: table => new
                 {
-                    PostVideosId = table.Column<string>(type: "text", nullable: false),
-                    PostsId = table.Column<string>(type: "text", nullable: false)
+                    PostVideosId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PostsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -290,13 +299,13 @@ namespace Aniverse.Persistence.Migrations
                         name: "FK_PostPostVideos_Files_PostVideosId",
                         column: x => x.PostVideosId,
                         principalTable: "Files",
-                        principalColumn: "Id",
+                        principalColumn: "identifier",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PostPostVideos_Posts_PostsId",
                         column: x => x.PostsId,
                         principalTable: "Posts",
-                        principalColumn: "Id",
+                        principalColumn: "identifier",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -304,14 +313,14 @@ namespace Aniverse.Persistence.Migrations
                 name: "SavePosts",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    identifier = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    PostId = table.Column<string>(type: "text", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE")
+                    PostId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SavePosts", x => x.Id);
+                    table.PrimaryKey("PK_SavePosts", x => x.identifier);
                     table.ForeignKey(
                         name: "FK_SavePosts_AppUser_UserId",
                         column: x => x.UserId,
@@ -321,23 +330,24 @@ namespace Aniverse.Persistence.Migrations
                         name: "FK_SavePosts_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "identifier",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Shares",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    identifier = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     PostUrl = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    PostId = table.Column<string>(type: "text", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_DATE"),
+                    PostId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shares", x => x.Id);
+                    table.PrimaryKey("PK_Shares", x => x.identifier);
                     table.ForeignKey(
                         name: "FK_Shares_AppUser_UserId",
                         column: x => x.UserId,
@@ -347,7 +357,7 @@ namespace Aniverse.Persistence.Migrations
                         name: "FK_Shares_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "identifier");
                 });
 
             migrationBuilder.CreateIndex(

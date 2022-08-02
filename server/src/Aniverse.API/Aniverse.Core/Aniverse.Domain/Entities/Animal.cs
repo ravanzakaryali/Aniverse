@@ -3,7 +3,7 @@ using Aniverse.Domain.Entities.Identity;
 
 namespace Aniverse.Domain.Entities
 {
-    public class Animal : BaseEntity<string>
+    public class Animal : BaseEntity<Guid>
     {
         public string Name { get; set; }
         public string Bio { get; set; }

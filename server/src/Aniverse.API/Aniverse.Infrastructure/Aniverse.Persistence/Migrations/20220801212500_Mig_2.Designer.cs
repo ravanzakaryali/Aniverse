@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Aniverse.Persistence.Migrations
 {
     [DbContext(typeof(AniverseDbContext))]
-    [Migration("20220731134056_Int_Mig")]
-    partial class Int_Mig
+    [Migration("20220801212500_Mig_2")]
+    partial class Mig_2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,14 +22,16 @@ namespace Aniverse.Persistence.Migrations
                 .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "uuid-ossp");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Aniverse.Domain.Entities.Animal", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<string>("Id"), null, null, null, null, null, null);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("Bio")
                         .IsRequired()
@@ -39,14 +41,14 @@ namespace Aniverse.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -61,11 +63,12 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("Aniverse.Domain.Entities.AnimalFollow", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("AnimalId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("AnimalId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -84,13 +87,14 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("Aniverse.Domain.Entities.Comment", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<string>("Id"), null, null, null, null, null, null);
-
-                    b.Property<string>("CommentId")
-                        .HasColumnType("text");
+                    b.Property<Guid?>("CommentId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Content")
                         .HasColumnType("text");
@@ -98,15 +102,15 @@ namespace Aniverse.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
-                    b.Property<string>("PostId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("ReplyCommentsId")
-                        .HasColumnType("text");
+                    b.Property<Guid?>("ReplyCommentsId")
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -125,15 +129,16 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("Aniverse.Domain.Entities.File", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<string>("Id"), null, null, null, null, null, null);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -151,15 +156,16 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("Aniverse.Domain.Entities.FriendRequest", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<string>("Id"), null, null, null, null, null, null);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int>("DeclinedCount")
                         .ValueGeneratedOnAdd()
@@ -172,7 +178,7 @@ namespace Aniverse.Persistence.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -189,22 +195,23 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("Aniverse.Domain.Entities.HasTag", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<string>("Id"), null, null, null, null, null, null);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -272,10 +279,16 @@ namespace Aniverse.Persistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RefreshTokenEndDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTime>("RegisterDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -293,23 +306,24 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("Aniverse.Domain.Entities.Like", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<string>("Id"), null, null, null, null, null, null);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
-                    b.Property<string>("PostId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -326,13 +340,14 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("Aniverse.Domain.Entities.Post", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<string>("Id"), null, null, null, null, null, null);
-
-                    b.Property<string>("AnimalId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("AnimalId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Content")
                         .HasColumnType("text");
@@ -340,14 +355,14 @@ namespace Aniverse.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -364,18 +379,19 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("Aniverse.Domain.Entities.SavePost", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<string>("Id"), null, null, null, null, null, null);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
-                    b.Property<string>("PostId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -391,24 +407,25 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("Aniverse.Domain.Entities.Share", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<string>("Id"), null, null, null, null, null, null);
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("identifier")
+                        .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_DATE");
+                        .HasDefaultValueSql("NOW()");
 
-                    b.Property<string>("PostId")
-                        .HasColumnType("text");
+                    b.Property<Guid?>("PostId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("PostUrl")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -425,11 +442,11 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("HasTagPost", b =>
                 {
-                    b.Property<string>("HasTagsId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("HasTagsId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("PostsId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("PostsId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("HasTagsId", "PostsId");
 
@@ -440,11 +457,11 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("PostPostImages", b =>
                 {
-                    b.Property<string>("PostImagesId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("PostImagesId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("PostsId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("PostsId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("PostImagesId", "PostsId");
 
@@ -455,11 +472,11 @@ namespace Aniverse.Persistence.Migrations
 
             modelBuilder.Entity("PostPostVideos", b =>
                 {
-                    b.Property<string>("PostVideosId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("PostVideosId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("PostsId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("PostsId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("PostVideosId", "PostsId");
 
@@ -498,7 +515,9 @@ namespace Aniverse.Persistence.Migrations
                 {
                     b.HasOne("Aniverse.Domain.Entities.Animal", "Animal")
                         .WithMany()
-                        .HasForeignKey("AnimalId");
+                        .HasForeignKey("AnimalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Aniverse.Domain.Entities.Identity.AppUser", "User")
                         .WithMany()
@@ -517,7 +536,9 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasOne("Aniverse.Domain.Entities.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Aniverse.Domain.Entities.Identity.AppUser", "User")
                         .WithMany("Comments")
@@ -547,7 +568,9 @@ namespace Aniverse.Persistence.Migrations
                 {
                     b.HasOne("Aniverse.Domain.Entities.Post", "Post")
                         .WithMany("Likes")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Aniverse.Domain.Entities.Identity.AppUser", "User")
                         .WithMany()
@@ -562,7 +585,9 @@ namespace Aniverse.Persistence.Migrations
                 {
                     b.HasOne("Aniverse.Domain.Entities.Animal", "Animal")
                         .WithMany("Posts")
-                        .HasForeignKey("AnimalId");
+                        .HasForeignKey("AnimalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Aniverse.Domain.Entities.Identity.AppUser", "User")
                         .WithMany("Posts")
@@ -577,7 +602,9 @@ namespace Aniverse.Persistence.Migrations
                 {
                     b.HasOne("Aniverse.Domain.Entities.Post", "Post")
                         .WithMany("SavePosts")
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Aniverse.Domain.Entities.Identity.AppUser", "User")
                         .WithMany("SavePosts")

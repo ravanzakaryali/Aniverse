@@ -8,10 +8,14 @@ namespace Aniverse.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<Animal> builder)
         {
-            builder.Property(a => a.Id).HasIdentityOptions<string>();
+            builder.Property(x => x.Id)
+                   .HasColumnName("identifier")
+                   .HasColumnType("uuid")
+                   .HasDefaultValueSql("gen_random_uuid()") 
+                   .IsRequired();
             builder.Property(a => a.Name).IsRequired().HasMaxLength(128);
             builder.Property(a => a.Bio).IsRequired().HasMaxLength(350);
-            builder.Property(a => a.CreatedDate).HasDefaultValueSql("CURRENT_DATE");
+            builder.Property(a => a.CreatedDate).HasDefaultValueSql("NOW()");
 
         }
     }

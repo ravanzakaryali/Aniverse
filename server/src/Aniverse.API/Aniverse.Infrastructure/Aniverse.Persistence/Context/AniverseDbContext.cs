@@ -23,6 +23,7 @@ namespace Aniverse.Persistence.Context
         public DbSet<PostVideos> PostVideos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasPostgresExtension("uuid-ossp");
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
         }

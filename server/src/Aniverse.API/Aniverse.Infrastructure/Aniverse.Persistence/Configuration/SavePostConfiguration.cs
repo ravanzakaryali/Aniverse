@@ -8,8 +8,12 @@ namespace Aniverse.Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<SavePost> builder)
         {
-            builder.Property(sp => sp.CreatedDate).HasDefaultValueSql("CURRENT_DATE");
-            builder.Property(sp => sp.Id).HasIdentityOptions<string>();
+            builder.Property(x => x.Id)
+                   .HasColumnName("identifier")
+                   .HasColumnType("uuid")
+                   .HasDefaultValueSql("gen_random_uuid()")
+                   .IsRequired();
+            builder.Property(sp => sp.CreatedDate).HasDefaultValueSql("NOW()");
         }
     }
 }
