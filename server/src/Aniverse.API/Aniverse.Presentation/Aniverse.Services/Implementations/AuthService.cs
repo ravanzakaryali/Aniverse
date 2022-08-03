@@ -14,7 +14,11 @@ namespace Aniverse.Services.Implementations
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenHandler _tokenHandler;
-        public AuthService(IUnitOfWork unitOfWork, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenHandler tokenHandler)
+        public AuthService(
+            IUnitOfWork unitOfWork, 
+            UserManager<AppUser> userManager, 
+            SignInManager<AppUser> signInManager, 
+            ITokenHandler tokenHandler)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;

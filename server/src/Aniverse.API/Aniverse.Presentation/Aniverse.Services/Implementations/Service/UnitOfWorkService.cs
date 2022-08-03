@@ -9,10 +9,10 @@ namespace Aniverse.Services.Implementations.Service
 {
     public class UnitOfWorkService : IUnitOfWorkService
     {
-        private IUnitOfWork _unitOfWork;
-        private UserManager<AppUser> _userManager;
-        private SignInManager<AppUser> _signInManager;
-        private ITokenHandler _tokenHandler;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly ITokenHandler _tokenHandler;
         public UnitOfWorkService(
             IUnitOfWork unitOfWork, 
             ITokenHandler tokenHandler, 
