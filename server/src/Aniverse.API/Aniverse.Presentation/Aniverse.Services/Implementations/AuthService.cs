@@ -26,7 +26,7 @@ namespace Aniverse.Services.Implementations
             _tokenHandler = tokenHandler;
         }
 
-        public async Task<CreateUserResponse> Register(Register register)
+        public async Task<CreateUserResponse> RegisterAsync(Register register)
         {
             return await _unitOfWork.UserRepository.CreateAsync(register);
         }
