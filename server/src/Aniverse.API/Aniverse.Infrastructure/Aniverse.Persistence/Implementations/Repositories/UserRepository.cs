@@ -14,10 +14,15 @@ namespace Aniverse.Persistence.Implementations.Repositories
     public class UserRepository : Repository<AppUser, string>, IUserRepository
     {
         private readonly UserManager<AppUser> _userManager;
-        public UserRepository(AniverseDbContext context, 
-                            UserManager<AppUser> userManager) : base(context)
+        private readonly ITokenHandler _tokenHandler;
+        private readonly SignInManager<AppUser> _signInManager;
+        public UserRepository(
+            AniverseDbContext context,
+            UserManager<AppUser> userManager, 
+            ITokenHandler tokenHandler) : base(context)
         {
             _userManager = userManager;
+            _tokenHandler = tokenHandler;
         }
         public async Task<CreateUserResponse> CreateAsync(Register model)
         {
@@ -49,6 +54,31 @@ namespace Aniverse.Persistence.Implementations.Repositories
             {
                 throw new ArgumentException("User not found");
             }
+        }
+        public async Task<Token> LoginAsync(string username, string password, int accessTokenLifeTime = 15)
+        {
+            AppUser user = await _userManager.FindByNameAsync(username);
+            if (user is null)
+                throw new Exception("User not found");
+            if (!user.EmailConfirmed)
+                throw new Exception("Please email confirmed");
+            SignInResult signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+            if (!signInResult.Succeeded)
+                throw new Exception("Password and Username is wrong");
+            Token token = await _tokenHandler.CreateAccessTokenAsync(user);
+            await UpdateRefreshToken(user.RefreshToken, user, token.Expiration, accessTokenLifeTime);
+            return token;
+        }
+        public async Task<Token> RefreshTokenLoginAsync(string username, string refreshToken)
+        {
+            AppUser user = await _userManager.FindByNameAsync(username);
+            if (user is null)
+                throw new Exception("User not found");
+            if (user.RefreshToken != refreshToken)
+                throw new Exception("Token is valid");
+            Token token = await _tokenHandler.CreateAccessTokenAsync(user);
+            await UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 15);
+            return token;
         }
     }
 }
