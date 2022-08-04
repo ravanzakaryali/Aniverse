@@ -9,7 +9,7 @@ namespace Aniverse.API.Middelwares
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
 
-        public ExceptionHandlerMiddelware(RequestDelegate next, ILogger logger)
+        public ExceptionHandlerMiddelware(RequestDelegate next, ILogger<ExceptionHandlerMiddelware> logger)
         {
             _next = next;
             _logger = logger;
