@@ -1,5 +1,9 @@
-﻿using Aniverse.Domain.Entities.Identity;
+﻿using Aniverse.Application.Abstractions.Services;
+using Aniverse.Application.Abstractions.UnitOfWork;
+using Aniverse.Domain.Entities.Identity;
 using Aniverse.Persistence.Context;
+using Aniverse.Persistence.Implementations.Services;
+using Aniverse.Persistence.Implementations.UnitOfWrok;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +23,9 @@ namespace Aniverse.Persistence
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
             }).AddEntityFrameworkStores<AniverseDbContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITokenHandler, TokenHandler>();
+
         }
     }
 }

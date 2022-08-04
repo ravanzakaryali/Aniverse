@@ -17,7 +17,7 @@ namespace Aniverse.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> RegisterAsync([FromForm] Register register) => 
-            Ok(await _unitOfWorkService.AuthService.RegisterAsync(register));
+        public async Task<ActionResult> RegisterAsync([FromForm] Register register) 
+            => Ok(await _unitOfWorkService.AuthService.RegisterAsync(register));
     }
 }
