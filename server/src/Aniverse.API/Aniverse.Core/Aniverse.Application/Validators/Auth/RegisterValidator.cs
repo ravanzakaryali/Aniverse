@@ -11,28 +11,23 @@ namespace Aniverse.Application.Validators.Auth
                 .EmailAddress()
                     .WithMessage("Please enter email")
                 .NotNull()
-                .NotEmpty()
-                    .WithMessage("Not empty");
+                .NotEmpty();
             RuleFor(r => r.Password)
                 .NotNull()
                 .NotEmpty()
-                    .WithMessage("Not empty")
                 .Equals("ConfirmPassword");
             RuleFor(r=>r.PasswordConfirm)
                 .NotNull()
                 .NotEmpty()
-                    .WithMessage("Not empty")
                 .Equals("Password");
             RuleFor(r=>r.Firtname)
                 .NotNull()
                 .NotEmpty()
-                    .WithMessage("Not empty")
                 .MinimumLength(3)
                 .MaximumLength(100);
             RuleFor(r => r.Lastname)
                 .NotNull()
                 .NotEmpty()
-                    .WithMessage("Not empty")
                 .MinimumLength(3)
                 .MaximumLength(100);
 

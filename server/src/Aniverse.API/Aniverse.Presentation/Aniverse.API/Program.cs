@@ -1,4 +1,5 @@
 using Aniverse.API.Middelwares;
+using Aniverse.Application.Validators.Auth;
 using Aniverse.Persistence;
 using Aniverse.Services;
 using FluentValidation.AspNetCore;
@@ -12,7 +13,8 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog();
-builder.Services.AddControllers().AddFluentValidation(fl => fl.RegisterValidatorsFromAssemblyContaining<Assembly>()); ;
+builder.Services.AddControllers()
+                .AddFluentValidation(fl => fl.RegisterValidatorsFromAssemblyContaining<RegisterValidator>());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPersistenceServices(builder.Configuration);
