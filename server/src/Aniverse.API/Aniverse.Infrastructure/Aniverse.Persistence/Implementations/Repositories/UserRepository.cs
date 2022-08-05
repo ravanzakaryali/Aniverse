@@ -29,9 +29,9 @@ namespace Aniverse.Persistence.Implementations.Repositories
             IdentityResult result = await _userManager.CreateAsync(new()
             {
                 Firstname = model.Firtname,
-                Lastname = model.Firtname,
+                Lastname = model.Lastname,
                 Email = model.Email,
-                UserName = model.Email.CharacterRegulatory(),
+                UserName = await GenerateUsernameAsync(model.Firtname + model.Lastname),
             });
             CreateUserResponse response = new() { Succeeded = result.Succeeded };
             if (result.Succeeded)
@@ -54,6 +54,16 @@ namespace Aniverse.Persistence.Implementations.Repositories
             {
                 throw new ArgumentException("User not found");
             }
+        }
+        private async Task<string> GenerateUsernameAsync(string fullname)
+        {
+            string username = fullname.CharacterRegulatory(30);
+            AppUser isUserName = await _userManager.FindByNameAsync(username);
+            if (isUserName != null)
+            {
+                await GenerateUsername(fullname);
+            }
+            return username;
         }
     }
 }

@@ -57,5 +57,6 @@ namespace Aniverse.Services.Implementations
             await _unitOfWork.UserRepository.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 15);
             return token;
         }
+        
     }
 }
