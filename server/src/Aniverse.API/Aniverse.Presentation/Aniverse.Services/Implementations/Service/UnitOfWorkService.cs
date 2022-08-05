@@ -34,6 +34,6 @@ namespace Aniverse.Services.Implementations.Service
             _userManager,
             _signInManager,
             _tokenHandler);
-        public IUserService UserService => _userService ??= new UserService();
+        public IUserService UserService => _userService ??= new UserService(_unitOfWork);
     }
 }
