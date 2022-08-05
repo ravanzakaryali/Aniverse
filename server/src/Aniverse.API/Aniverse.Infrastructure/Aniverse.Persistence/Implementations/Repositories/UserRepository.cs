@@ -33,7 +33,7 @@ namespace Aniverse.Persistence.Implementations.Repositories
                 Lastname = model.Lastname,
                 Email = model.Email,
                 UserName = await GenerateUsernameAsync(model.Firtname + model.Lastname),
-            });
+            }, model.Password);
             CreateUserResponse response = new() { Succeeded = result.Succeeded };
             if (result.Succeeded)
                 response.Message = "Please confirm email";
@@ -48,7 +48,7 @@ namespace Aniverse.Persistence.Implementations.Repositories
             if (user != null)
             {
                 user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = accessTokenDate.AddSeconds(addOnAccessTokenDate);
+                user.RefreshTokenExpiryTime = accessTokenDate.AddDays(addOnAccessTokenDate);
                 await _userManager.UpdateAsync(user);
             }
             else
@@ -62,8 +62,8 @@ namespace Aniverse.Persistence.Implementations.Repositories
             AppUser isUserName = await _userManager.FindByNameAsync(username);
             if (isUserName != null)
             {
-                
-                await GenerateUsernameAsync(fullname,maxLenght+=1);
+
+                await GenerateUsernameAsync(fullname, maxLenght += 1);
             }
             return username;
         }

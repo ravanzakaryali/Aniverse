@@ -7,6 +7,8 @@ using Aniverse.Persistence.Implementations.UnitOfWrok;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Aniverse.Persistence
 {
@@ -22,9 +24,28 @@ namespace Aniverse.Persistence
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<AniverseDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ITokenHandler, TokenHandler>();
+            services.AddScoped<ITokenHandler, Implementations.Services.TokenHandler>();
+            services.AddAuthentication()
+            .AddJwtBearer(options =>
+                {
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Security"])),
+            ValidateIssuer = true,
+            ValidIssuer = configuration["JWT:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = configuration["JWT:Audience"],
+            ValidateLifetime = true,
+            RequireExpirationTime = true
+        };
+    });
+
 
         }
     }

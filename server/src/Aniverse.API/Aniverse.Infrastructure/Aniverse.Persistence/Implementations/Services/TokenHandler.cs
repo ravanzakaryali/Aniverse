@@ -29,7 +29,7 @@ namespace Aniverse.Persistence.Implementations.Services
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_configuration["JWT:Security"]));
             SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var roles = _userManager.GetRolesAsync(user).Result;
+            //var roles = _userManager.GetRolesAsync(user).Result;
 
             List<Claim> authClaims = new()
             {
@@ -37,7 +37,8 @@ namespace Aniverse.Persistence.Implementations.Services
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
             };
-            authClaims.AddRange(roles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
+
+            //authClaims.AddRange(roles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
 
             JwtSecurityToken token = new(
                issuer: _configuration["JWT:Issuer"],
@@ -62,6 +63,25 @@ namespace Aniverse.Persistence.Implementations.Services
                 Expiration = token.ValidTo,
                 RefreshToken = refreshToken
             };
+        }
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = false,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Security"])),
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
+            return principal;
         }
 
         public string CreateRefreshToken()

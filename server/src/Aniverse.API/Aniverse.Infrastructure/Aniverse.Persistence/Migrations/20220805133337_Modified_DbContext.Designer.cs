@@ -3,6 +3,7 @@ using System;
 using Aniverse.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Aniverse.Persistence.Migrations
 {
     [DbContext(typeof(AniverseDbContext))]
-    partial class AniverseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220805133337_Modified_DbContext")]
+    partial class Modified_DbContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

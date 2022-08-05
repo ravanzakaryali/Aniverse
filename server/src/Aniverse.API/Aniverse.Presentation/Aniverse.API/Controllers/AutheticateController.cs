@@ -17,7 +17,16 @@ namespace Aniverse.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> RegisterAsync([FromForm] Register register) 
+        public async Task<ActionResult> RegisterAsync([FromForm] Register register)
             => Ok(await _unitOfWorkService.AuthService.RegisterAsync(register));
+
+        [HttpPost("login")]
+        public async Task<ActionResult> LoginAsync([FromForm] Login login)
+            => Ok(await _unitOfWorkService.AuthService.LoginAsync(login));
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult> RefreshToken([FromForm] TokenRequest tokenModel)
+            => Ok(await _unitOfWorkService.AuthService.RefreshTokenLoginAsync(tokenModel));
+
     }
 }

@@ -31,30 +31,33 @@ namespace Aniverse.Services.Implementations
             return await _unitOfWork.UserRepository.CreateAsync(register);
         }
 
-        public async Task<Token> LoginAsync(string username, string password, int accessTokenLifeTime = 15)
+        public async Task<Token> LoginAsync(Login login)
         {
-            AppUser user = await _userManager.FindByNameAsync(username);
+            AppUser user = await _userManager.FindByNameAsync(login.UserName);
             if (user is null)
                 throw new Exception("User not found");
-            if (!user.EmailConfirmed)
-                throw new Exception("Please email confirmed");
-            SignInResult signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+            //if (!user.EmailConfirmed)
+            //    throw new Exception("Please email confirmed");
+            SignInResult signInResult = await _signInManager.CheckPasswordSignInAsync(user, login.Password, false);
             if (!signInResult.Succeeded)
                 throw new Exception("Password and Username is wrong");
             Token token = await _tokenHandler.CreateAccessTokenAsync(user);
-            await _unitOfWork.UserRepository.UpdateRefreshToken(user.RefreshToken, user, token.Expiration, accessTokenLifeTime);
+            await _unitOfWork.UserRepository.UpdateRefreshToken(user.RefreshToken, user, token.Expiration, 15);
             return token;
         }
 
-        public async Task<Token> RefreshTokenLoginAsync(string username, string refreshToken)
+        public async Task<Token> RefreshTokenLoginAsync(TokenRequest tokenModel)
         {
-            AppUser user = await _userManager.FindByNameAsync(username);
-            if (user is null)
-                throw new Exception("User not found");
-            if (user.RefreshToken != refreshToken)
-                throw new Exception("Token is valid");
+            string accessToken = tokenModel.AccessToken;
+            string refreshToken = tokenModel.RefreshToken;
+            var principal = _tokenHandler.GetPrincipalFromExpiredToken(accessToken);
+            if (principal == null) throw new UnauthorizedAccessException();
+            string username = principal.Identity.Name;
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+                throw new NullReferenceException();
             Token token = await _tokenHandler.CreateAccessTokenAsync(user);
-            await _unitOfWork.UserRepository.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 15);
+           
             return token;
         }
         

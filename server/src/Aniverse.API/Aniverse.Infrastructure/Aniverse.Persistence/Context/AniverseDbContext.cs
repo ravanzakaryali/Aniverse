@@ -1,12 +1,14 @@
 ﻿using Aniverse.Domain.Entities;
 using Aniverse.Domain.Entities.Common;
+using Aniverse.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Reflection;
 
 namespace Aniverse.Persistence.Context
 {
-    public class AniverseDbContext : DbContext
+    public class AniverseDbContext : IdentityDbContext<AppUser, AppRole,string>
     {
         public AniverseDbContext(DbContextOptions options) : base(options) { }
         public DbSet<Animal> Animals { get; set; }
