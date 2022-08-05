@@ -23,5 +23,9 @@ namespace Aniverse.Services.Implementations
                 throw new Exception("User not found");
             return _mapper.Map<UserGetDto>(user);
         }
+        public async Task<List<UserGetAll>> GetAllAsync()
+        {
+            return _mapper.Map<List<UserGetAll>>(await _unitOfWork.UserRepository.GetAllAsync());
+        }
     }
 }
