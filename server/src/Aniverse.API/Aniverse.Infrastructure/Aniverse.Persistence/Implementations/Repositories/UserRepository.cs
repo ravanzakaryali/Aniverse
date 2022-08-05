@@ -18,11 +18,12 @@ namespace Aniverse.Persistence.Implementations.Repositories
         private readonly SignInManager<AppUser> _signInManager;
         public UserRepository(
             AniverseDbContext context,
-            UserManager<AppUser> userManager, 
-            ITokenHandler tokenHandler) : base(context)
+            UserManager<AppUser> userManager,
+            ITokenHandler tokenHandler, SignInManager<AppUser> signInManager) : base(context)
         {
             _userManager = userManager;
             _tokenHandler = tokenHandler;
+            _signInManager = signInManager;
         }
         public async Task<CreateUserResponse> CreateAsync(Register model)
         {
@@ -52,16 +53,17 @@ namespace Aniverse.Persistence.Implementations.Repositories
             }
             else
             {
-                throw new ArgumentException("User not found");
+                throw new Exception("User not found");
             }
         }
-        private async Task<string> GenerateUsernameAsync(string fullname)
+        private async Task<string> GenerateUsernameAsync(string fullname, int maxLenght = 20)
         {
-            string username = fullname.CharacterRegulatory(30);
+            string username = (fullname.CharacterRegulatory() + Guid.NewGuid().ToString("N"))[..maxLenght];
             AppUser isUserName = await _userManager.FindByNameAsync(username);
             if (isUserName != null)
             {
-                await GenerateUsername(fullname);
+                
+                await GenerateUsernameAsync(fullname,maxLenght+=1);
             }
             return username;
         }
