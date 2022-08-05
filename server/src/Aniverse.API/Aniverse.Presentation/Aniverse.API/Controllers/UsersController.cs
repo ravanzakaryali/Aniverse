@@ -14,9 +14,9 @@ namespace Aniverse.API.Controllers
         {
             _unitOfWorkService = unitOfWorkService;
         }
-        //GET
-
-        //GETALL
+        [HttpGet("{username}")]
+        public async Task<IActionResult> GetAsync([FromRoute] string username)
+            => Ok(await _unitOfWorkService.UserService.GetAsync(username));
 
     }
 }

@@ -1,4 +1,5 @@
 using Aniverse.API.Middelwares;
+using Aniverse.Application.Mappers;
 using Aniverse.Application.Validators.Auth;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Persistence;
@@ -22,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationService();
+builder.Services.AddMapperService();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
