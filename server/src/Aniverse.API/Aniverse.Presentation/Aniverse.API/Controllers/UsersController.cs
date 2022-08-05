@@ -6,11 +6,11 @@ namespace Aniverse.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         readonly IUnitOfWorkService _unitOfWorkService;
 
-        public UserController(IUnitOfWorkService unitOfWorkService)
+        public UsersController(IUnitOfWorkService unitOfWorkService)
         {
             _unitOfWorkService = unitOfWorkService;
         }
