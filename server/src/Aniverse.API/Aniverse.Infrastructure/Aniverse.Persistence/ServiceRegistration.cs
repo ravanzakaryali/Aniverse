@@ -16,7 +16,8 @@ namespace Aniverse.Persistence
     {
         public static void AddPersistenceServices(this IServiceCollection services, ConfigurationManager configuration)
         {
-            services.AddDbContext<AniverseDbContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("Database")));
+
+            services.AddDbContext<AniverseDbContext>(opt => opt.EnableSensitiveDataLogging().UseNpgsql(configuration.GetConnectionString("Database")));
             services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.Password.RequiredLength = 3;

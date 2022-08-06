@@ -7,6 +7,7 @@ namespace Aniverse.Core.Repositories.Abstraction.Base
         Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null,
                                 bool tracking = true,
                                 params string[] includes);
+        Task<List<TResult>> GetAllWithSelectAsync<TResult>(Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, params string[] includes);
         Task<List<TEntity>> GetAllAsync<TOrderBy>(int page,
                                             int size,
                                             Expression<Func<TEntity, TOrderBy>> orderBy,
@@ -15,6 +16,8 @@ namespace Aniverse.Core.Repositories.Abstraction.Base
                                             bool tracking = true,
                                             params string[] includes);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, params string[] include);
+        Task<TResult> GetWithSelectAsync<TResult>(Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>> where = null, bool tracking = true, params string[] includes);
+        Task<List<TResult>> GetAllWithSelectAsync<TOrderBy, TResult>(int page, int size, Expression<Func<TEntity, TOrderBy>> orderBy, Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>> predicate = null, bool isOrderBy = true, bool tracking = true, params string[] includes);
         Task<TEntity> AddAsync(TEntity entity);
         TEntity Remove(TEntity entity);
         Task<TEntity> RemoveAsync(TKey id);

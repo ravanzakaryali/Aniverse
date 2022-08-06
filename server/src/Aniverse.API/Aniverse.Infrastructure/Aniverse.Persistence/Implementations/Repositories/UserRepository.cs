@@ -7,6 +7,8 @@ using Aniverse.Domain.Entities.Identity;
 using Aniverse.Persistence.Context;
 using Aniverse.Persistence.Implementations.Repositories.Base;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Diagnostics;
 
 namespace Aniverse.Persistence.Implementations.Repositories
@@ -16,6 +18,7 @@ namespace Aniverse.Persistence.Implementations.Repositories
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenHandler _tokenHandler;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly AniverseDbContext _context;
         public UserRepository(
             AniverseDbContext context,
             UserManager<AppUser> userManager,

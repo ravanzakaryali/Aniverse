@@ -3,6 +3,7 @@ using Aniverse.Application.DTOs.User;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Services.Abstractions;
 using AutoMapper;
+using System;
 
 namespace Aniverse.Services.Implementations
 {
@@ -18,14 +19,27 @@ namespace Aniverse.Services.Implementations
         }
         public async Task<UserGetDto> GetAsync(string username)
         {
-            AppUser user = await _unitOfWork.UserRepository.GetAsync(u=>u.UserName == username);
+            UserGetDto user = await _unitOfWork.UserRepository
+                .GetWithSelectAsync(u=> new UserGetDto
+                {
+                    UserName = u.UserName,
+                    Firstname = u.Firstname,
+                    Lastname = u.Lastname,
+                    Birthday = u.Birthday,
+                    Bio = u.Bio
+                },u=>u.UserName == username);
             if (user is null)
                 throw new Exception("User not found");
-            return _mapper.Map<UserGetDto>(user);
+            return user;
         }
         public async Task<List<UserGetAll>> GetAllAsync()
         {
-            return _mapper.Map<List<UserGetAll>>(await _unitOfWork.UserRepository.GetAllAsync());
+            return await _unitOfWork.UserRepository.GetAllWithSelectAsync(u=>new UserGetAll
+            {
+                UserName=u.UserName,
+                Firstname=u.Firstname,
+                Lastname = u.Lastname,
+            });
         }
     }
 }

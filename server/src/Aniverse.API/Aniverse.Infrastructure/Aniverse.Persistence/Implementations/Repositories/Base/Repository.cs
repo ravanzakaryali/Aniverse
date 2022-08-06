@@ -31,7 +31,15 @@ namespace Aniverse.Persistence.Implementations.Repositories.Base
                 ? await query.ToListAsync()
                 : await query.Where(predicate).ToListAsync();
         }
-
+        public async Task<List<TResult>> GetAllWithSelectAsync<TResult>(Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, params string[] includes)
+        {
+            IQueryable<TEntity> query = GetQuery(includes);
+            if (!tracking)
+                query = Table.AsNoTracking();
+            return predicate is null
+                ? await query.Select(select).ToListAsync()
+                : await query.Where(predicate).Select(select).ToListAsync();
+        }
         public async Task<List<TEntity>> GetAllAsync<TOrderBy>(int page, int size, Expression<Func<TEntity, TOrderBy>> orderBy, Expression<Func<TEntity, bool>> predicate = null, bool isOrderBy = true, bool tracking = true, params string[] includes)
         {
             IQueryable<TEntity> query = GetQuery(includes);
@@ -44,6 +52,18 @@ namespace Aniverse.Persistence.Implementations.Repositories.Base
                 :
                 await query.Where(predicate).OrderByDescending(orderBy).Skip((page - 1) * size).Take(size).ToListAsync();
         }
+        public async Task<List<TResult>> GetAllWithSelectAsync<TOrderBy, TResult>(int page, int size, Expression<Func<TEntity, TOrderBy>> orderBy, Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>> predicate = null, bool isOrderBy = true, bool tracking = true, params string[] includes)
+        {
+            IQueryable<TEntity> query = GetQuery(includes);
+            if (!tracking)
+                query = Table.AsNoTracking();
+            return predicate is null
+                ? await query.Select(select).ToListAsync()
+                : isOrderBy ?
+                await query.Where(predicate).OrderBy(orderBy).Skip((page - 1) * size).Take(size).Select(select).ToListAsync()
+                :
+                await query.Where(predicate).OrderByDescending(orderBy).Skip((page - 1) * size).Take(size).Select(select).ToListAsync();
+        }
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate = null, bool tracking = true, params string[] includes)
         {
@@ -53,6 +73,15 @@ namespace Aniverse.Persistence.Implementations.Repositories.Base
             return predicate is null
                 ? await query.FirstOrDefaultAsync()
                 : await query.Where(predicate).FirstOrDefaultAsync();
+        }
+        public async Task<TResult> GetWithSelectAsync<TResult>(Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>> where = null, bool tracking = true, params string[] includes)
+        {
+            IQueryable<TEntity> query = GetQuery(includes);
+            if (!tracking)
+                query = Table.AsNoTracking();
+            return where is null
+               ? await query.Select(select).FirstOrDefaultAsync()
+               : await query.Where(where).Select(select).FirstOrDefaultAsync();
         }
         public TEntity Remove(TEntity entity)
         {
