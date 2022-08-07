@@ -4,6 +4,7 @@ using Aniverse.Domain.Entities.Identity;
 using Aniverse.Persistence.Context;
 using Aniverse.Persistence.Implementations.Services;
 using Aniverse.Persistence.Implementations.UnitOfWrok;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,24 +31,27 @@ namespace Aniverse.Persistence
             }).AddEntityFrameworkStores<AniverseDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITokenHandler, Implementations.Services.TokenHandler>();
-            services.AddAuthentication()
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddJwtBearer(options =>
                 {
-        options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Security"])),
-            ValidateIssuer = true,
-            ValidIssuer = configuration["JWT:Issuer"],
-            ValidateAudience = true,
-            ValidAudience = configuration["JWT:Audience"],
-            ValidateLifetime = true,
-            RequireExpirationTime = true
-        };
-    });
-
-
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Security"])),
+                        ValidateIssuer = true,
+                        ValidIssuer = configuration["JWT:Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = configuration["JWT:Audience"],
+                        ValidateLifetime = true,
+                        RequireExpirationTime = true
+                    };
+                });
         }
     }
 }

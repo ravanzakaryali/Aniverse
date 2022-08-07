@@ -6,6 +6,7 @@ using Aniverse.Core.Repositories.Abstraction;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Persistence.Context;
 using Aniverse.Persistence.Implementations.Repositories.Base;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace Aniverse.Persistence.Implementations.Repositories
@@ -16,15 +17,17 @@ namespace Aniverse.Persistence.Implementations.Repositories
         private readonly ITokenHandler _tokenHandler;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly AniverseDbContext _context;
+        private readonly IHttpContextAccessor _claims;
         public UserRepository(
             AniverseDbContext context,
             UserManager<AppUser> userManager,
-            ITokenHandler tokenHandler, SignInManager<AppUser> signInManager) : base(context)
+            ITokenHandler tokenHandler, SignInManager<AppUser> signInManager, IHttpContextAccessor claims) : base(context)
         {
             _userManager = userManager;
             _tokenHandler = tokenHandler;
             _signInManager = signInManager;
             _context = context;
+            _claims = claims;
         }
         public async Task<CreateUserResponse> CreateAsync(Register model)
         {
@@ -66,6 +69,13 @@ namespace Aniverse.Persistence.Implementations.Repositories
 
                 await GenerateUsernameAsync(fullname, maxLenght += 1);
             }
+            return username;
+        }
+        public string GetLoginUsername()
+        {
+            string username = _claims.HttpContext?.User?.GetLoginUserName();
+            if (username is null) 
+                throw new Exception("User not found");
             return username;
         }
     }

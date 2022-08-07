@@ -1,5 +1,6 @@
 ﻿using Aniverse.Application.DTOs.Common;
 using Aniverse.Services.Abstractions.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace Aniverse.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         readonly IUnitOfWorkService _unitOfWorkService;
@@ -21,6 +23,9 @@ namespace Aniverse.API.Controllers
         [HttpGet("{username}")]
         public async Task<IActionResult> GetAsync([FromRoute] string username)
             => Ok(await _unitOfWorkService.UserService.GetAsync(username));
+        [HttpGet("getLogin")]
+        public async Task<IActionResult> GetLoginAsync()
+            => Ok(await _unitOfWorkService.UserService.GetLoginAsync());
 
     }
 }

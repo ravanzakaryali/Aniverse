@@ -8,6 +8,7 @@ namespace Aniverse.Core.Repositories.Abstraction
 {
     public interface IUserRepository : IRepository<AppUser, string>
     {
+        string GetLoginUsername();
         Task<CreateUserResponse> CreateAsync(Register model);
         Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate);
     }

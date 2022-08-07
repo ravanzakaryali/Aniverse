@@ -4,10 +4,12 @@ using Aniverse.Application.DTOs.User;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Services.Abstractions;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using System;
 
 namespace Aniverse.Services.Implementations
 {
+
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -17,6 +19,21 @@ namespace Aniverse.Services.Implementations
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+        public async Task<UserGetDto> GetLoginAsync()
+        {
+            string username = _unitOfWork.UserRepository.GetLoginUsername();
+            UserGetDto user = await _unitOfWork.UserRepository.GetWithSelectAsync(u=> new UserGetDto()
+            {
+                Bio = u.Bio,
+                UserName = u.UserName,
+                Birthday = u.Birthday,
+                Firstname = u.Firstname,
+                Lastname = u.Lastname,
+            },u => u.UserName == username);
+            if (user is null)
+                throw new Exception("User is not found");
+            return user;
         }
         public async Task<UserGetDto> GetAsync(string username)
         {
