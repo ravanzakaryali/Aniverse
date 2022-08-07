@@ -1,6 +1,5 @@
 ﻿using Aniverse.Application.Abstractions.Services;
 using Aniverse.Application.DTOs.Auth;
-using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.User;
 using Aniverse.Application.Extensions;
 using Aniverse.Core.Repositories.Abstraction;
@@ -8,9 +7,6 @@ using Aniverse.Domain.Entities.Identity;
 using Aniverse.Persistence.Context;
 using Aniverse.Persistence.Implementations.Repositories.Base;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Diagnostics;
 
 namespace Aniverse.Persistence.Implementations.Repositories
 {
