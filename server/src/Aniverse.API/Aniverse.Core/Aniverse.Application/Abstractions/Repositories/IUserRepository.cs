@@ -1,7 +1,6 @@
 ﻿using Aniverse.Application.DTOs.Auth;
 using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.User;
-using Aniverse.Application.Filters.Pagination;
 using Aniverse.Core.Repositories.Abstraction.Base;
 using Aniverse.Domain.Entities.Identity;
 
@@ -11,6 +10,5 @@ namespace Aniverse.Core.Repositories.Abstraction
     {
         Task<CreateUserResponse> CreateAsync(Register model);
         Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate);
-        Task<List<AppUser>> GetUserPagination(PaginationQuery query);
     }
 }

@@ -21,23 +21,29 @@ namespace Aniverse.Services.Implementations
         public async Task<UserGetDto> GetAsync(string username)
         {
             UserGetDto user = await _unitOfWork.UserRepository
-                .GetWithSelectAsync(u=> new UserGetDto
+                .GetWithSelectAsync(u => new UserGetDto
                 {
                     UserName = u.UserName,
                     Firstname = u.Firstname,
                     Lastname = u.Lastname,
                     Birthday = u.Birthday,
                     Bio = u.Bio
-                },u=>u.UserName == username);
+                }, u => u.UserName == username);
             if (user is null)
                 throw new Exception("User not found");
             return user;
         }
         public async Task<List<UserGetAll>> GetAllAsync(PaginationQuery query)
         {
-            var datas = await _unitOfWork.UserRepository.GetUserPagination(query);
+            var datas = await _unitOfWork.UserRepository.GetAllWithSelectAsync(query.Page, query.Size, u => u.CreatedDate, u => new UserGetAll
+            {
+                CreatedDate = u.CreatedDate,
+                Firstname = u.Firstname,
+                Lastname = u.Lastname,
+                UserName = u.UserName
+            },isOrderBy: false);
 
-            return _mapper.Map<List<UserGetAll>>(datas);
+            return datas;
         }
 
     }
