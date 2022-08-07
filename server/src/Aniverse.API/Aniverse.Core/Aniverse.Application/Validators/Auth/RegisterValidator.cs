@@ -20,7 +20,7 @@ namespace Aniverse.Application.Validators.Auth
                 .NotNull()
                 .NotEmpty()
                 .Equals("Password");
-            RuleFor(r=>r.Firtname)
+            RuleFor(r=>r.Firstname)
                 .NotNull()
                 .NotEmpty()
                 .MinimumLength(3)

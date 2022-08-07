@@ -25,8 +25,8 @@ namespace Aniverse.Persistence
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = true;
+                //options.User.RequireUniqueEmail = true;
+                //options.SignIn.RequireConfirmedEmail = true;
             }).AddEntityFrameworkStores<AniverseDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITokenHandler, Implementations.Services.TokenHandler>();

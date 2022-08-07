@@ -1,10 +1,11 @@
-﻿using Aniverse.Application.DTOs.User;
+﻿using Aniverse.Application.DTOs.Common;
+using Aniverse.Application.DTOs.User;
 
 namespace Aniverse.Services.Abstractions
 {
     public interface IUserService
     {
         Task<UserGetDto> GetAsync(string username);
-        Task<List<UserGetAll>> GetAllAsync();
+        Task<List<UserGetAll>> GetAllAsync(PaginationQuery query);
     }
 }

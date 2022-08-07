@@ -1,9 +1,10 @@
-﻿using Aniverse.Domain.Entities.Common.Enums;
+﻿using Aniverse.Domain.Entities.Common;
+using Aniverse.Domain.Entities.Common.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace Aniverse.Domain.Entities.Identity
 {
-    public class AppUser : IdentityUser
+    public class AppUser : IdentityUser, ICreatedDate
     {
         public string Firstname { get; set; }
         public string Lastname { get; set; }
@@ -20,5 +21,6 @@ namespace Aniverse.Domain.Entities.Identity
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Animal> Animals { get; set; }
         public ICollection<SavePost> SavePosts { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

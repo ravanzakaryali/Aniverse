@@ -1,4 +1,5 @@
 ﻿using Aniverse.Application.Abstractions.UnitOfWork;
+using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.User;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Services.Abstractions;
@@ -32,14 +33,12 @@ namespace Aniverse.Services.Implementations
                 throw new Exception("User not found");
             return user;
         }
-        public async Task<List<UserGetAll>> GetAllAsync()
+        public async Task<List<UserGetAll>> GetAllAsync(PaginationQuery query)
         {
-            return await _unitOfWork.UserRepository.GetAllWithSelectAsync(u=>new UserGetAll
-            {
-                UserName=u.UserName,
-                Firstname=u.Firstname,
-                Lastname = u.Lastname,
-            });
+            var datas = await _unitOfWork.UserRepository.GetUserPagination(query);
+
+            return _mapper.Map<List<UserGetAll>>(datas);
         }
+
     }
 }

@@ -18,6 +18,19 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+                      builder =>
+                      {
+                          builder.WithOrigins("http://127.0.0.1:5500")
+                                                .AllowAnyHeader()
+                                                .AllowAnyMethod()
+                                                .AllowCredentials();
+                      });
+});
+
 builder.Services.AddControllers()
                 .AddFluentValidation(fl => fl.RegisterValidatorsFromAssemblyContaining<RegisterValidator>());
 builder.Services.AddEndpointsApiExplorer();
@@ -36,15 +49,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionMiddelware();
-
-app.UseHttpsRedirection();
-
+app.UseCors();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
-
-app.UseRouting();
-
 app.MapControllers();
-
 app.Run();

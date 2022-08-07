@@ -1,7 +1,9 @@
 ﻿using Aniverse.Application.Abstractions.Services;
 using Aniverse.Application.DTOs.Auth;
+using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.User;
 using Aniverse.Application.Extensions;
+using Aniverse.Application.Filters.Pagination;
 using Aniverse.Core.Repositories.Abstraction;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Persistence.Context;
@@ -27,15 +29,16 @@ namespace Aniverse.Persistence.Implementations.Repositories
             _userManager = userManager;
             _tokenHandler = tokenHandler;
             _signInManager = signInManager;
+            _context = context;
         }
         public async Task<CreateUserResponse> CreateAsync(Register model)
         {
             IdentityResult result = await _userManager.CreateAsync(new()
             {
-                Firstname = model.Firtname,
+                Firstname = model.Firstname,
                 Lastname = model.Lastname,
                 Email = model.Email,
-                UserName = await GenerateUsernameAsync(model.Firtname + model.Lastname),
+                UserName = await GenerateUsernameAsync(model.Firstname + model.Lastname),
             }, model.Password);
             CreateUserResponse response = new() { Succeeded = result.Succeeded };
             if (result.Succeeded)
@@ -69,6 +72,11 @@ namespace Aniverse.Persistence.Implementations.Repositories
                 await GenerateUsernameAsync(fullname, maxLenght += 1);
             }
             return username;
+        }
+        public async Task<List<AppUser>> GetUserPagination(PaginationQuery query)
+        {
+            IQueryable<AppUser> iquery = _context.Users.OrderByDescending(u => u.CreatedDate).AsQueryable();
+            return await PagedList<AppUser>.ToPagedListAsync(iquery, query.Page, query.Size);
         }
     }
 }
