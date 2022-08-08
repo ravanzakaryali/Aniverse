@@ -1,4 +1,5 @@
-﻿using Aniverse.Services.Abstractions.UnitOfWork;
+﻿using Aniverse.Application.DTOs.Common;
+using Aniverse.Services.Abstractions.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aniverse.API.Controllers
@@ -13,5 +14,12 @@ namespace Aniverse.API.Controllers
         {
             _unitOfWorkService = unitOfWorkService;
         }
+        [HttpGet("{animalname}")]
+        public async Task<IActionResult> GetAsync([FromRoute] string animalname)
+            => Ok(await _unitOfWorkService.AnimalService.GetAsync(animalname));
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] PaginationQuery query)
+            => Ok(await _unitOfWorkService.AnimalService.GetAllAsync(query));
     }
 }

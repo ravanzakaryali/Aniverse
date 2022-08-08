@@ -2,7 +2,7 @@
 
 namespace Aniverse.Application.DTOs.Animal
 {
-    public class AnimalGetDto
+    public class AnimalGetAll
     {
         public string Name { get; set; }
         public UserGetAll UserGetDto { get; set; }

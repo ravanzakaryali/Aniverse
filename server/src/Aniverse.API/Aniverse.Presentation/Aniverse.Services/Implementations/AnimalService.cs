@@ -1,5 +1,6 @@
 ﻿using Aniverse.Application.Abstractions.UnitOfWork;
 using Aniverse.Application.DTOs.Animal;
+using Aniverse.Application.DTOs.Common;
 using Aniverse.Domain.Entities;
 using Aniverse.Services.Abstractions;
 using AutoMapper;
@@ -22,6 +23,10 @@ namespace Aniverse.Services.Implementations
             if (animal is null)
                 throw new Exception("Animal not found");
             return _mapper.Map<AnimalGetDto>(animal);
+        }
+        public async Task<List<AnimalGetAll>> GetAllAsync(PaginationQuery query)
+        {
+            return _mapper.Map<List<AnimalGetAll>>(await _unitOfWork.AnimalRepository.GetAllAsync(query.Page, query.Size, a => a.CreatedDate, predicate: null, includes: "User"));
         }
     }
 }

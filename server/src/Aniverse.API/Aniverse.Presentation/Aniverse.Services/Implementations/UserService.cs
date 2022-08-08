@@ -52,7 +52,7 @@ namespace Aniverse.Services.Implementations
         }
         public async Task<List<UserGetAll>> GetAllAsync(PaginationQuery query)
         {
-            var datas = await _unitOfWork.UserRepository.GetAllWithSelectAsync(query.Page, query.Size, u => u.CreatedDate, u => new UserGetAll
+            List<UserGetAll> users = await _unitOfWork.UserRepository.GetAllWithSelectAsync(query.Page, query.Size, u => u.CreatedDate, u => new UserGetAll
             {
                 CreatedDate = u.CreatedDate,
                 Firstname = u.Firstname,
@@ -60,7 +60,7 @@ namespace Aniverse.Services.Implementations
                 UserName = u.UserName
             },isOrderBy: false);
 
-            return datas;
+            return users;
         }
 
     }
