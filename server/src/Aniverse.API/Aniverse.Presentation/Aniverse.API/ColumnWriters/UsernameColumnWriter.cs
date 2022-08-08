@@ -12,7 +12,7 @@ namespace Aniverse.API.ColumnWriters
 
         public override object GetValue(LogEvent logEvent, IFormatProvider formatProvider = null)
         {
-            var (username,value) = logEvent.Properties.FirstOrDefault(p => p.Key == "username");
+            var (username,value) = logEvent.Properties.FirstOrDefault(p => p.Key == "Username");
             return value?.ToString() ?? null;
         }
     }

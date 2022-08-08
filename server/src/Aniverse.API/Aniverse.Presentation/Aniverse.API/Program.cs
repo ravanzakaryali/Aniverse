@@ -88,8 +88,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.Use(async (context, next) =>
 {
-    string? username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
-    LogContext.PushProperty("username", username);
+    var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
+    LogContext.PushProperty("Username", username);
     await next();
 });
 app.MapControllers();
