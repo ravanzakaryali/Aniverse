@@ -31,7 +31,7 @@ namespace Aniverse.Services.Implementations.Service
         private IAuthService _authService;
         private IUserService _userService;
         
-        public IAnimalService AnimalService => _animalService ??= new AnimalService();
+        public IAnimalService AnimalService => _animalService ??= new AnimalService(_unitOfWork,_mapper);
         public IAuthService AuthService => _authService ??= new AuthService(
             _unitOfWork,
             _userManager,

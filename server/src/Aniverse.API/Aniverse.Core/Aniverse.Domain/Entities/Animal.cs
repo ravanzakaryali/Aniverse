@@ -5,6 +5,7 @@ namespace Aniverse.Domain.Entities
 {
     public class Animal : BaseEntity<Guid>
     {
+        public string Animalname { get; set; }
         public string Name { get; set; }
         public string Bio { get; set; }
         public string UserId { get; set; }
