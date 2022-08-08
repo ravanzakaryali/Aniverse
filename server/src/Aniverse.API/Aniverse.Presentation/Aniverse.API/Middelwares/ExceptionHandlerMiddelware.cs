@@ -23,7 +23,7 @@ namespace Aniverse.API.Middelwares
             catch (Exception ex)
             {
                 ErrorReponse error = await HandleExceptionAsync(httpContext, ex);
-                _logger.LogError($"Request {httpContext.Request?.Method}: {httpContext.Request?.Path.Value} failed Error: {@error}", error);
+                _logger.LogError(ex,$"Request {httpContext.Request?.Method}: {httpContext.Request?.Path.Value} failed Error: {@error}", error);
             }
         }
         private async Task<ErrorReponse> HandleExceptionAsync(HttpContext context, Exception exception)
@@ -41,4 +41,3 @@ namespace Aniverse.API.Middelwares
         }
     }
 }
- 
