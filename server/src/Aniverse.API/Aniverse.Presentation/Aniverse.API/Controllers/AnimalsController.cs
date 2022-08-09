@@ -1,11 +1,14 @@
-﻿using Aniverse.Application.DTOs.Common;
+﻿using Aniverse.Application.DTOs.Animal;
+using Aniverse.Application.DTOs.Common;
 using Aniverse.Services.Abstractions.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aniverse.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AnimalsController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWorkService;
@@ -21,5 +24,8 @@ namespace Aniverse.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] PaginationQuery query)
             => Ok(await _unitOfWorkService.AnimalService.GetAllAsync(query));
+        [HttpPost("create")]
+        public async Task<IActionResult> Create([FromBody] AnimalCreateDto animal)
+            => Ok(await _unitOfWorkService.AnimalService.Create(animal));
     }
 }

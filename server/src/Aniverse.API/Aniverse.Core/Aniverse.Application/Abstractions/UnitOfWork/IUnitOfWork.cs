@@ -1,4 +1,5 @@
-﻿using Aniverse.Core.Repositories.Abstraction;
+﻿using Aniverse.Application.Abstractions.Repositories;
+using Aniverse.Core.Repositories.Abstraction;
 
 namespace Aniverse.Application.Abstractions.UnitOfWork
 {
@@ -7,6 +8,7 @@ namespace Aniverse.Application.Abstractions.UnitOfWork
         IPostRepository PostRepository { get; }
         IUserRepository UserRepository { get; }
         IAnimalRepository AnimalRepository { get; }
+        IAnimalFollowRepository AnimalFollowRepository { get; }
         Task SaveAsync();
     }
 }

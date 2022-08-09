@@ -7,5 +7,6 @@ namespace Aniverse.Services.Abstractions
     {
         Task<AnimalGetDto> GetAsync(string animalname);
         Task<List<AnimalGetAll>> GetAllAsync(PaginationQuery query);
+        Task<AnimalGetDto> Create(AnimalCreateDto animal);
     }
 }

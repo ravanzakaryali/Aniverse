@@ -21,7 +21,7 @@ Log.Logger = new LoggerConfiguration()
     {
         {"Timespan", new TimestampColumnWriter() },
         {"Message", new RenderedMessageColumnWriter()},
-        { "MessageTemplate", new MessageTemplateColumnWriter()},
+        {"MessageTemplate", new MessageTemplateColumnWriter()},
         {"Level",new LevelColumnWriter(true,NpgsqlDbType.Varchar)},
         {"LogEvent", new LogEventSerializedColumnWriter()},
         {"Username", new UsernameColumnWriter() },

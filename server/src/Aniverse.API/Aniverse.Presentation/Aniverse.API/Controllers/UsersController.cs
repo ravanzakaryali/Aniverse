@@ -20,12 +20,14 @@ namespace Aniverse.API.Controllers
         [HttpGet]
         public async Task<ActionResult> Get([FromQuery] PaginationQuery query)
             => Ok(await _unitOfWorkService.UserService.GetAllAsync(query));
+
         [HttpGet("{username}")]
         public async Task<IActionResult> GetAsync([FromRoute] string username)
             => Ok(await _unitOfWorkService.UserService.GetAsync(username));
+
         [HttpGet("getLogin")]
         public async Task<IActionResult> GetLoginAsync()
             => Ok(await _unitOfWorkService.UserService.GetLoginAsync());
-
+        
     }
 }

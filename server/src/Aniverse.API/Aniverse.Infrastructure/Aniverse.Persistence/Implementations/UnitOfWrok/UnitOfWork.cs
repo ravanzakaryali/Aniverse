@@ -1,4 +1,5 @@
-﻿using Aniverse.Application.Abstractions.Services;
+﻿using Aniverse.Application.Abstractions.Repositories;
+using Aniverse.Application.Abstractions.Services;
 using Aniverse.Application.Abstractions.UnitOfWork;
 using Aniverse.Core.Repositories.Abstraction;
 using Aniverse.Domain.Entities.Identity;
@@ -30,7 +31,9 @@ namespace Aniverse.Persistence.Implementations.UnitOfWrok
         private IPostRepository _postRepository;
         private IAnimalRepository _animalRepository;
         private IUserRepository _userRepository;
+        private AnimalFollowRepository _animalFollowRepository;
         public IPostRepository PostRepository => _postRepository ??= new PostRepository(_context);
+        public IAnimalFollowRepository AnimalFollowRepository => _animalFollowRepository ??= new AnimalFollowRepository(_context);
         public IAnimalRepository AnimalRepository => _animalRepository ??= new AnimalRepository(_context);
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context, _userManager, _tokenHandler,_signInManager,_claims);
         public async Task SaveAsync()

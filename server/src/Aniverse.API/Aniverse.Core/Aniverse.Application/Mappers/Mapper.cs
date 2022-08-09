@@ -17,6 +17,7 @@ namespace Aniverse.Application.Mappers
             #region Animal
             CreateMap<Animal, AnimalGetDto>();
             CreateMap<Animal, AnimalGetAll>();
+            CreateMap<AnimalCreateDto, Animal>();
             #endregion
         }
     }
