@@ -28,6 +28,7 @@ namespace Aniverse.API.Controllers
         [HttpGet("getLogin")]
         public async Task<IActionResult> GetLoginAsync()
             => Ok(await _unitOfWorkService.UserService.GetLoginAsync());
-        
+
+       
     }
 }

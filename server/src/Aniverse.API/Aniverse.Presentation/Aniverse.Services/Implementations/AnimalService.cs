@@ -1,8 +1,10 @@
 ﻿using Aniverse.Application.Abstractions.UnitOfWork;
 using Aniverse.Application.DTOs.Animal;
 using Aniverse.Application.DTOs.Common;
+using Aniverse.Application.DTOs.User;
 using Aniverse.Application.Extensions;
 using Aniverse.Domain.Entities;
+using Aniverse.Domain.Entities.Identity;
 using Aniverse.Services.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -23,14 +25,14 @@ namespace Aniverse.Services.Implementations
         }
         public async Task<AnimalGetDto> GetAsync(string animalname)
         {
-            Animal animal = await _unitOfWork.AnimalRepository.GetAsync(a => a.Animalname == animalname, include: "User");
+            Animal animal = await _unitOfWork.AnimalRepository.GetAsync(a => a.Animalname == animalname, include: "User", tracking: false);
             if (animal is null)
                 throw new Exception("Animal not found");
             return _mapper.Map<AnimalGetDto>(animal);
         }
         public async Task<List<AnimalGetAll>> GetAllAsync(PaginationQuery query)
         {
-            return _mapper.Map<List<AnimalGetAll>>(await _unitOfWork.AnimalRepository.GetAllAsync(query.Page, query.Size, a => a.CreatedDate, predicate: null, includes: "User"));
+            return _mapper.Map<List<AnimalGetAll>>(await _unitOfWork.AnimalRepository.GetAllAsync(query.Page, query.Size, a => a.CreatedDate, predicate: null,tracking: false, includes: "User"));
         }
         public async Task<AnimalGetDto> Create(AnimalCreateDto animal)
         {
@@ -40,6 +42,7 @@ namespace Aniverse.Services.Implementations
             Animal newAnimal = await _unitOfWork.AnimalRepository.AddAsync(createAnimal);
             return _mapper.Map<AnimalGetDto>(newAnimal);
         }
+        #region GenerateUsernameAnimal
         private async Task<string> GenerateAnimalnameAsync(string fullname, int maxLenght = 10)
         {
             string animalname = (fullname.CharacterRegulatory() + Guid.NewGuid().ToString("N"))[..maxLenght];
@@ -50,6 +53,6 @@ namespace Aniverse.Services.Implementations
             }
             return animalname;
         }
-
+        #endregion
     }
 }

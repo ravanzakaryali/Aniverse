@@ -8,6 +8,7 @@ using Aniverse.Persistence.Context;
 using Aniverse.Persistence.Implementations.Repositories.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aniverse.Persistence.Implementations.Repositories
 {

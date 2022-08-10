@@ -1,5 +1,4 @@
 ﻿using Aniverse.Application.DTOs.Auth;
-using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.User;
 using Aniverse.Core.Repositories.Abstraction.Base;
 using Aniverse.Domain.Entities.Identity;

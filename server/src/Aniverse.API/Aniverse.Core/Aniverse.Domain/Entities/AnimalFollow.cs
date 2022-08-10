@@ -14,3 +14,4 @@ namespace Aniverse.Domain.Entities
         public DateTime CreatedDate { get; set; }
     }
 }
+    

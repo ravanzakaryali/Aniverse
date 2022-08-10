@@ -27,5 +27,6 @@ namespace Aniverse.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] AnimalCreateDto animal)
             => Ok(await _unitOfWorkService.AnimalService.Create(animal));
+
     }
 }
