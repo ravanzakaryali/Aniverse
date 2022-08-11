@@ -5,7 +5,7 @@ using Aniverse.Persistence.Implementations.Repositories.Base;
 
 namespace Aniverse.Persistence.Implementations.Repositories
 {
-    public class AnimalFollowRepository : Repository<AnimalFollow, string>, IAnimalFollowRepository
+    public class AnimalFollowRepository : Repository<AnimalFollow, Guid>, IAnimalFollowRepository
     {
         public AnimalFollowRepository(AniverseDbContext context) : base(context)
         {

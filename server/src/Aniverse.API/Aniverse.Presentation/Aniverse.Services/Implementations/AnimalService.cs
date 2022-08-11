@@ -58,6 +58,18 @@ namespace Aniverse.Services.Implementations
             };
             await _unitOfWork.AnimalFollowRepository.AddAsync(animalFollow);
         }
+        public async Task UnfollowAsync(string animalname)
+        {
+            Animal animal = await _unitOfWork.AnimalRepository.GetAsync(a => a.NormalizedAnimalname == animalname.ToUpper());
+            if (animal is null)
+                throw new Exception("Animal not found");
+            var userLoginId = _claims.HttpContext.User.GetLoginUserId();
+            AnimalFollow animalFollowDb = await _unitOfWork.AnimalFollowRepository.GetAsync(a => a.UserId == userLoginId && a.AnimalId == animal.Id);
+            if (animalFollowDb is null)
+                throw new Exception("animal follow not found");
+            _unitOfWork.AnimalFollowRepository.Remove(animalFollowDb);
+            await _unitOfWork.SaveAsync();
+        }
         #region GenerateUsernameAnimal
         private async Task<string> GenerateAnimalnameAsync(string fullname, int maxLenght = 10)
         {

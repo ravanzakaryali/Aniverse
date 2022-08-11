@@ -89,12 +89,6 @@ namespace Aniverse.Persistence.Implementations.Repositories.Base
         {
             return _context.Set<TEntity>().Remove(entity).Entity;
         }
-
-        public async Task<TEntity> RemoveAsync(TKey id)
-        {
-            return await _context.Set<TEntity>().FindAsync(id);
-        }
-
         public async Task<int> SaveAsync()
         {
             return await _context.SaveChangesAsync();

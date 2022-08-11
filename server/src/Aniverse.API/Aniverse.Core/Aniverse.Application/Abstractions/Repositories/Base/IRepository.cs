@@ -20,7 +20,6 @@ namespace Aniverse.Core.Repositories.Abstraction.Base
         Task<List<TResult>> GetAllWithSelectAsync<TOrderBy, TResult>(int page, int size, Expression<Func<TEntity, TOrderBy>> orderBy, Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>> predicate = null, bool isOrderBy = true, bool tracking = true, params string[] includes);
         Task<TEntity> AddAsync(TEntity entity);
         TEntity Remove(TEntity entity);
-        Task<TEntity> RemoveAsync(TKey id);
         TEntity Update(TEntity entity);
         Task<int> SaveAsync();
     }

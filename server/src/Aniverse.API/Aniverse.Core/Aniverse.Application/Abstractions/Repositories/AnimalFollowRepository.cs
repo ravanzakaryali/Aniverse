@@ -3,7 +3,7 @@ using Aniverse.Domain.Entities;
 
 namespace Aniverse.Application.Abstractions.Repositories
 {
-    public interface IAnimalFollowRepository : IRepository<AnimalFollow,string>
+    public interface IAnimalFollowRepository : IRepository<AnimalFollow,Guid>
     {
     }
 }
