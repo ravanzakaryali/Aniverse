@@ -3,6 +3,7 @@ using System;
 using Aniverse.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Aniverse.Persistence.Migrations
 {
     [DbContext(typeof(AniverseDbContext))]
-    partial class AniverseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220810195528_Add_AnimalNormalizedName")]
+    partial class Add_AnimalNormalizedName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +72,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Animals", (string)null);
+                    b.ToTable("Animals");
                 });
 
             modelBuilder.Entity("Aniverse.Domain.Entities.AnimalFollow", b =>
@@ -94,7 +96,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AnimalFollows", (string)null);
+                    b.ToTable("AnimalFollows");
                 });
 
             modelBuilder.Entity("Aniverse.Domain.Entities.Comment", b =>
@@ -136,7 +138,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Aniverse.Domain.Entities.File", b =>
@@ -161,7 +163,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Files", (string)null);
+                    b.ToTable("Files");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("File");
                 });
@@ -202,7 +204,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FriendRequests", (string)null);
+                    b.ToTable("FriendRequests");
                 });
 
             modelBuilder.Entity("Aniverse.Domain.Entities.HasTag", b =>
@@ -228,7 +230,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HasTags", (string)null);
+                    b.ToTable("HasTags");
                 });
 
             modelBuilder.Entity("Aniverse.Domain.Entities.Identity.AppRole", b =>
@@ -388,7 +390,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes", (string)null);
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Aniverse.Domain.Entities.Post", b =>
@@ -427,7 +429,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Aniverse.Domain.Entities.SavePost", b =>
@@ -455,7 +457,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SavePosts", (string)null);
+                    b.ToTable("SavePosts");
                 });
 
             modelBuilder.Entity("Aniverse.Domain.Entities.Share", b =>
@@ -490,7 +492,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Shares", (string)null);
+                    b.ToTable("Shares");
                 });
 
             modelBuilder.Entity("HasTagPost", b =>
@@ -505,7 +507,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("PostsId");
 
-                    b.ToTable("HasTagPost", (string)null);
+                    b.ToTable("HasTagPost");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -626,7 +628,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("PostsId");
 
-                    b.ToTable("PostPostImages", (string)null);
+                    b.ToTable("PostPostImages");
                 });
 
             modelBuilder.Entity("PostPostVideos", b =>
@@ -641,7 +643,7 @@ namespace Aniverse.Persistence.Migrations
 
                     b.HasIndex("PostsId");
 
-                    b.ToTable("PostPostVideos", (string)null);
+                    b.ToTable("PostPostVideos");
                 });
 
             modelBuilder.Entity("Aniverse.Domain.Entities.PostImages", b =>

@@ -18,7 +18,7 @@ namespace Aniverse.Persistence.Configuration
             builder.Property(a => a.Bio).HasMaxLength(350);
             builder.Property(a => a.CreatedDate).HasDefaultValueSql("NOW()");
             builder.HasIndex(a => a.Animalname).IsUnique();
-            builder.HasIndex(a=>a.NormalizedAnimalname).HasName("AnimalnameIndex").IsUnique();
+            builder.HasIndex(a=>a.NormalizedAnimalname).HasDatabaseName("AnimalnameIndex").IsUnique();
         }
     }
 }

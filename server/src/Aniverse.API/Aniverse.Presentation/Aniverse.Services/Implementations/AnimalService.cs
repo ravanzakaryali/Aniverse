@@ -42,6 +42,22 @@ namespace Aniverse.Services.Implementations
             Animal newAnimal = await _unitOfWork.AnimalRepository.AddAsync(createAnimal);
             return _mapper.Map<AnimalGetDto>(newAnimal);
         }
+        public async Task FollowAsync(string animalname)
+        {
+            Animal animal = await _unitOfWork.AnimalRepository.GetAsync(a=>a.NormalizedAnimalname == animalname.ToUpper());
+            if (animal is null)
+                throw new Exception("Animal not found");
+            var userLoginId = _claims.HttpContext.User.GetLoginUserId();
+            AnimalFollow animalFollowDb = await _unitOfWork.AnimalFollowRepository.GetAsync(a=>a.UserId == userLoginId && a.AnimalId == animal.Id);
+            if (animalFollowDb is not null)
+                throw new Exception("Already animal follow");
+            AnimalFollow animalFollow = new()
+            {
+                UserId = userLoginId,
+                AnimalId = animal.Id,
+            };
+            await _unitOfWork.AnimalFollowRepository.AddAsync(animalFollow);
+        }
         #region GenerateUsernameAnimal
         private async Task<string> GenerateAnimalnameAsync(string fullname, int maxLenght = 10)
         {

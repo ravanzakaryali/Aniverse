@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Aniverse.Persistence.Context
 {
-    public class AniverseDbContext : IdentityDbContext<AppUser, AppRole,string>
+    public class AniverseDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
         public AniverseDbContext(DbContextOptions options) : base(options) { }
         public DbSet<Animal> Animals { get; set; }
@@ -36,14 +36,12 @@ namespace Aniverse.Persistence.Context
             DateTime utcNow = DateTime.UtcNow;
             foreach (EntityEntry entry in entries)
             {
-                if(entry.Entity is ICreatedDate createdEntity && entry.State is EntityState.Added)
-                {
+                if (entry.Entity is ICreatedDate createdEntity && entry.State is EntityState.Added)
                     createdEntity.CreatedDate = utcNow;
-                }
-                if(entry.Entity is IUpdatedDate updatedEntity && entry.State is EntityState.Modified)
-                {
+                if (entry.Entity is IUpdatedDate updatedEntity && entry.State is EntityState.Modified)
                     updatedEntity.UpdatedDate = utcNow;
-                }
+                if (entry.Entity is Animal animal && (entry.State is EntityState.Added || entry.State is EntityState.Modified))
+                    animal.NormalizedAnimalname = animal.Animalname.ToUpper();
             }
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }

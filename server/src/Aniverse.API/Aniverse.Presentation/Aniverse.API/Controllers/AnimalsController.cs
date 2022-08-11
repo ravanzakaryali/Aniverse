@@ -28,5 +28,12 @@ namespace Aniverse.API.Controllers
         public async Task<IActionResult> Create([FromBody] AnimalCreateDto animal)
             => Ok(await _unitOfWorkService.AnimalService.Create(animal));
 
+        [HttpPost("{animalname}/follow")]
+        public async Task<IActionResult> FollowAsync([FromRoute] string animalname)
+        {
+            await _unitOfWorkService.AnimalService.FollowAsync(animalname);
+            return NoContent();
+        }
+
     }
 }
