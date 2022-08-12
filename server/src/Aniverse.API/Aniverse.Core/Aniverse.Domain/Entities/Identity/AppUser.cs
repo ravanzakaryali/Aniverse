@@ -15,6 +15,7 @@ namespace Aniverse.Domain.Entities.Identity
         public Gender Gender { get; set; }
         public DateTime Birthday { get; set; }
         public DateTime RegisterDate { get; set; }
+        public ICollection<UserFollow> UserFollows { get; set; }
         public ICollection<FriendRequest> FriendRequests { get; set; }
         public ICollection<Post> Posts { get; set; }
         public ICollection<Share> Shares { get; set; }

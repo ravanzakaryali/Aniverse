@@ -31,9 +31,11 @@ namespace Aniverse.Persistence.Implementations.UnitOfWrok
         private IPostRepository _postRepository;
         private IAnimalRepository _animalRepository;
         private IUserRepository _userRepository;
-        private AnimalFollowRepository _animalFollowRepository;
+        private IAnimalFollowRepository _animalFollowRepository;
+        private IUserFollowRepository _userFollowRepository;
         public IPostRepository PostRepository => _postRepository ??= new PostRepository(_context);
         public IAnimalFollowRepository AnimalFollowRepository => _animalFollowRepository ??= new AnimalFollowRepository(_context);
+        public IUserFollowRepository UserFollowRepository => _userFollowRepository ??= new UserFollowRepository(_context);
         public IAnimalRepository AnimalRepository => _animalRepository ??= new AnimalRepository(_context);
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context, _userManager, _tokenHandler,_signInManager,_claims);
         public async Task SaveAsync()

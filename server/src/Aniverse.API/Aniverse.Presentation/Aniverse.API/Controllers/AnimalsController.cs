@@ -38,7 +38,5 @@ namespace Aniverse.API.Controllers
             await _unitOfWorkService.AnimalService.UnfollowAsync(animalname);
             return NoContent();
         }
-
-
     }
 }

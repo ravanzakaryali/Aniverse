@@ -1,6 +1,8 @@
 ﻿using Aniverse.Application.Abstractions.UnitOfWork;
 using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.User;
+using Aniverse.Application.Extensions;
+using Aniverse.Domain.Entities;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Services.Abstractions;
 using AutoMapper;
@@ -14,11 +16,13 @@ namespace Aniverse.Services.Implementations
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _claim;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor claim)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _claim = claim;
         }
         public async Task<UserGetDto> GetLoginAsync()
         {
@@ -62,6 +66,12 @@ namespace Aniverse.Services.Implementations
 
             return users;
         }
-    
+        public async Task FollowAsync(string username)
+        {
+            AppUser user = await _unitOfWork.UserRepository.GetAsync(u=>u.NormalizedUserName == username.ToUpper());
+            if (user is null)
+                throw new Exception("User not found");
+            var userLoginId = _claim.HttpContext.User.GetLoginUserId();
+        }
     }
 }
