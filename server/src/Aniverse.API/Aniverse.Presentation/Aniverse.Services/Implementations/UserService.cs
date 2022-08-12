@@ -72,6 +72,15 @@ namespace Aniverse.Services.Implementations
             if (user is null)
                 throw new Exception("User not found");
             var userLoginId = _claim.HttpContext.User.GetLoginUserId();
+            UserFollow animalFollow = await _unitOfWork.UserFollowRepository.GetAsync(u => u.UserId == userLoginId && u.FollowUserId == user.Id);
+            if (animalFollow is not null)
+                throw new Exception("Already  user follow");
+            UserFollow userFollow = new()
+            {
+                UserId = userLoginId,
+                FollowUserId = user.Id,
+            };
+            await _unitOfWork.UserFollowRepository.AddAsync(userFollow);
         }
     }
 }

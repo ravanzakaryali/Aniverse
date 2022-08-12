@@ -29,7 +29,12 @@ namespace Aniverse.API.Controllers
         public async Task<IActionResult> GetLoginAsync()
             => Ok(await _unitOfWorkService.UserService.GetLoginAsync());
 
-        
+        [HttpPost("{username}/folow")]
+        public async Task<IActionResult> FollowAsync([FromRoute]string username)
+        {
+            await _unitOfWorkService.UserService.FollowAsync(username);
+            return NoContent();
+        }
 
        
     }
