@@ -9,5 +9,6 @@ namespace Aniverse.Services.Abstractions
         Task<List<UserGetAll>> GetAllAsync(PaginationQuery query);
         Task<UserGetDto> GetLoginAsync();
         Task FollowAsync(string username);
+        Task UnfollowAsync(string username);
     }
 }

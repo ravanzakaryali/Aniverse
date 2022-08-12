@@ -35,6 +35,12 @@ namespace Aniverse.API.Controllers
             await _unitOfWorkService.UserService.FollowAsync(username);
             return NoContent();
         }
+        [HttpPost("{username}/unfollow")]
+        public async Task<IActionResult> UnfollowAsync([FromRoute] string username)
+        {
+            await _unitOfWorkService.UserService.UnfollowAsync(username);
+            return NoContent();
+        }
 
        
     }

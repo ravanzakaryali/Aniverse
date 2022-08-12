@@ -27,14 +27,14 @@ namespace Aniverse.Services.Implementations
         public async Task<UserGetDto> GetLoginAsync()
         {
             string username = _unitOfWork.UserRepository.GetLoginUsername();
-            UserGetDto user = await _unitOfWork.UserRepository.GetWithSelectAsync(u=> new UserGetDto()
+            UserGetDto user = await _unitOfWork.UserRepository.GetWithSelectAsync(u => new UserGetDto()
             {
                 Bio = u.Bio,
                 UserName = u.UserName,
                 Birthday = u.Birthday,
                 Firstname = u.Firstname,
                 Lastname = u.Lastname,
-            },u => u.UserName == username);
+            }, u => u.UserName == username);
             if (user is null)
                 throw new Exception("User is not found");
             return user;
@@ -62,18 +62,18 @@ namespace Aniverse.Services.Implementations
                 Firstname = u.Firstname,
                 Lastname = u.Lastname,
                 UserName = u.UserName
-            },isOrderBy: false);
+            }, isOrderBy: false);
 
             return users;
         }
         public async Task FollowAsync(string username)
         {
-            AppUser user = await _unitOfWork.UserRepository.GetAsync(u=>u.NormalizedUserName == username.ToUpper());
+            AppUser user = await _unitOfWork.UserRepository.GetAsync(u => u.NormalizedUserName == username.ToUpper());
             if (user is null)
                 throw new Exception("User not found");
             var userLoginId = _claim.HttpContext.User.GetLoginUserId();
-            UserFollow animalFollow = await _unitOfWork.UserFollowRepository.GetAsync(u => u.UserId == userLoginId && u.FollowUserId == user.Id);
-            if (animalFollow is not null)
+            UserFollow userFollowDb = await _unitOfWork.UserFollowRepository.GetAsync(u => u.UserId == userLoginId && u.FollowUserId == user.Id);
+            if (userFollowDb is not null)
                 throw new Exception("Already  user follow");
             UserFollow userFollow = new()
             {
@@ -81,6 +81,17 @@ namespace Aniverse.Services.Implementations
                 FollowUserId = user.Id,
             };
             await _unitOfWork.UserFollowRepository.AddAsync(userFollow);
+        }
+        public async Task UnfollowAsync(string username)
+        {
+            AppUser user = await _unitOfWork.UserRepository.GetAsync(u => u.NormalizedUserName == username.ToUpper());
+            if (user is null)
+                throw new Exception("User not found");
+            var userLoginId = _claim.HttpContext.User.GetLoginUserId();
+            UserFollow userFollowDb = await _unitOfWork.UserFollowRepository.GetAsync(u => u.UserId == userLoginId && u.FollowUserId == user.Id);
+            if (userFollowDb is null)
+                throw new Exception("UserFollow not found");
+            _unitOfWork.UserFollowRepository.Remove(userFollowDb);
         }
     }
 }
