@@ -15,5 +15,10 @@
                     throw new Exception("Max value 1000");
             }
         }
+        public PaginationQuery(int page, int size)
+        {
+            Page = page;
+            Size = size;
+        }
     }
 }

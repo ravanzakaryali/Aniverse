@@ -32,13 +32,26 @@ namespace Aniverse.Services.Implementations
         }
         public async Task<List<PostGetDto>> GetAllByLoginUserAsync(PaginationQuery query)
         {
-            var userLoginId = _claim.HttpContext.User.GetLoginUserId(); 
+            var userLoginId = _claim.HttpContext.User.GetLoginUserId();
             var user = await _unitOfWork.UserRepository.GetWithSelectAsync(u => new { u.UserName, u.Id }, u => u.Id == userLoginId);
             if (user is null)
                 throw new Exception("User not found");
             List<Post> post = await _unitOfWork.PostRepository.GetAllAsync(query.Page, query.Size, p => p.CreatedDate, p => p.UserId == user.Id, tracking: false, includes: "User");
             return _mapper.Map<List<PostGetDto>>(post);
         }
-       
+        public async Task<List<UserGetAll>> GetAllUserLikesPostAsync(string postId, PaginationQuery query = null)
+        {
+            query ??= new PaginationQuery(1, 10);
+            var post = await _unitOfWork.PostRepository.GetAsync(p => p.Id.ToString() == postId);
+            if (post is null)
+                throw new Exception("Post not found");
+            return await _unitOfWork.LikeRepository.GetAllWithSelectAsync(l => new UserGetAll
+            {
+                Firstname = l.User.Firstname,
+                Lastname = l.User.Lastname,
+                UserName = l.User.UserName,
+            }, u => u.PostId == post.Id, includes: "User");
+
+        }
     }
 }
