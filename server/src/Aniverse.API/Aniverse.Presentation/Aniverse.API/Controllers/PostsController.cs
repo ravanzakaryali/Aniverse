@@ -5,16 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace Aniverse.API.Controllers
 {
     [ApiController, Route("api/[controller]")]
-    public class PostsControllers : ControllerBase
+    public class PostsController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWorkService;
 
-        public PostsControllers(IUnitOfWorkService unitOfWorkService)
+        public PostsController(IUnitOfWorkService unitOfWorkService)
         {
             _unitOfWorkService = unitOfWorkService;
         }
         [HttpGet("{username}")]
         public async Task<IActionResult> GetAllByUser([FromRoute] string username, [FromQuery] PaginationQuery query)
-            => Ok(await _unitOfWorkService.PostService.GetAllByUser(username, query));
+            => Ok(await _unitOfWorkService.PostService.GetAllByUserAsync(username, query));
+        [HttpGet("user/login")]
+        public async Task<IActionResult> GetAllByLoginUser([FromQuery] PaginationQuery query)
+            => Ok(await _unitOfWorkService.PostService.GetAllByLoginUserAsync(query));
     }
 }
