@@ -41,7 +41,5 @@ namespace Aniverse.API.Controllers
             await _unitOfWorkService.UserService.UnfollowAsync(username);
             return NoContent();
         }
-
-       
     }
 }
