@@ -11,6 +11,9 @@ namespace Aniverse.Domain.Entities
         public Guid AnimalId { get; set; }
         public Animal Animal { get; set; }
         public bool IsDeleted { get; set; }
+        public int LikeCount { get; set; }
+        public int CommentCount { get; set; }
+        public int ShareCount { get; set; }
         public ICollection<HasTag> HasTags { get; set; }
         public ICollection<Like> Likes { get; set; } 
         public ICollection<Share> Shares { get; set; }

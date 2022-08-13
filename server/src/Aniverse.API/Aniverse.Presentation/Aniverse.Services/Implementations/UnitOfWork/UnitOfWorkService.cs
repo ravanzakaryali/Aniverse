@@ -33,6 +33,7 @@ namespace Aniverse.Services.Implementations.Service
         private IAnimalService _animalService;
         private IAuthService _authService;
         private IUserService _userService;
+        private IPostService _postService;
         
         public IAnimalService AnimalService => _animalService ??= new AnimalService(_unitOfWork,_mapper,_claims);
         public IAuthService AuthService => _authService ??= new AuthService(
@@ -41,5 +42,6 @@ namespace Aniverse.Services.Implementations.Service
             _signInManager,
             _tokenHandler);
         public IUserService UserService => _userService ??= new UserService(_unitOfWork,_mapper,_claims);
+        public IPostService PostService => _postService ??= new PostService(_unitOfWork,_mapper);
     }
 }

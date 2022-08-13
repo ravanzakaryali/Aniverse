@@ -5,5 +5,6 @@
         IAnimalService AnimalService { get; }
         IAuthService AuthService { get; }
         IUserService UserService { get;}
+        IPostService PostService { get; }
     }
 }

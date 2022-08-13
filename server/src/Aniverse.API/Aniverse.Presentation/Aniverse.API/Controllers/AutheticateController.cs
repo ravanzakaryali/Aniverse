@@ -1,12 +1,10 @@
 ﻿using Aniverse.Application.DTOs.Auth;
 using Aniverse.Services.Abstractions.UnitOfWork;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aniverse.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [ApiController,Route("api/[controller]")]
     public class AutheticateController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWorkService;

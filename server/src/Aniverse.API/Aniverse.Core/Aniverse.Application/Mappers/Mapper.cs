@@ -1,4 +1,5 @@
 ﻿using Aniverse.Application.DTOs.Animal;
+using Aniverse.Application.DTOs.HasTag;
 using Aniverse.Application.DTOs.User;
 using Aniverse.Domain.Entities;
 using Aniverse.Domain.Entities.Identity;
@@ -18,6 +19,9 @@ namespace Aniverse.Application.Mappers
             CreateMap<Animal, AnimalGetDto>();
             CreateMap<Animal, AnimalGetAll>();
             CreateMap<AnimalCreateDto, Animal>();
+            #endregion
+            #region HasTag
+            CreateMap<HasTag, HasTagGet>();
             #endregion
         }
     }
