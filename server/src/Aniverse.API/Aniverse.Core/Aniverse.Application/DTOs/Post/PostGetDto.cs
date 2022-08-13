@@ -5,6 +5,7 @@ namespace Aniverse.Application.DTOs.Post
 {
     public class PostGetDto
     {
+        public string Id { get; set; }
         public string Content { get; set; }
         public UserGetAll User { get; set; }
         public int LikeCount { get; set; }

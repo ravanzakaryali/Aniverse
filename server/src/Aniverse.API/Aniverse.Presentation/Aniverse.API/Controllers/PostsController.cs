@@ -13,7 +13,7 @@ namespace Aniverse.API.Controllers
         {
             _unitOfWorkService = unitOfWorkService;
         }
-        [HttpGet("{username}")]
+        [HttpGet("user/{username}")]
         public async Task<IActionResult> GetAllByUser([FromRoute] string username, [FromQuery] PaginationQuery query)
             => Ok(await _unitOfWorkService.PostService.GetAllByUserAsync(username, query));
         [HttpGet("user/login")]

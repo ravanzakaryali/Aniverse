@@ -1,9 +1,9 @@
 ﻿using Aniverse.Application.Abstractions.UnitOfWork;
 using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.Post;
+using Aniverse.Application.DTOs.User;
 using Aniverse.Application.Extensions;
 using Aniverse.Domain.Entities;
-using Aniverse.Domain.Entities.Identity;
 using Aniverse.Services.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +22,7 @@ namespace Aniverse.Services.Implementations
             _mapper = mapper;
             _claim = claim;
         }
-        public async Task<List<PostGetDto>> GetAllByUserAysnc(string username, PaginationQuery query)
+        public async Task<List<PostGetDto>> GetAllByUserAsync(string username, PaginationQuery query)
         {
             var user = await _unitOfWork.UserRepository.GetWithSelectAsync(u => new { u.UserName, u.Id }, u => u.NormalizedUserName == username.ToUpper());
             if (user is null)
@@ -39,5 +39,6 @@ namespace Aniverse.Services.Implementations
             List<Post> post = await _unitOfWork.PostRepository.GetAllAsync(query.Page, query.Size, p => p.CreatedDate, p => p.UserId == user.Id, tracking: false, includes: "User");
             return _mapper.Map<List<PostGetDto>>(post);
         }
+       
     }
 }
