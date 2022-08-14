@@ -19,8 +19,11 @@ namespace Aniverse.API.Controllers
         [HttpGet("user/login")]
         public async Task<IActionResult> GetAllByLoginUser([FromQuery] PaginationQuery query)
             => Ok(await _unitOfWorkService.PostService.GetAllByLoginUserAsync(query));
-        [HttpGet("likes")]
-        public async Task<IActionResult> GetAllUserLikesPost([FromRoute] string postId, [FromQuery] PaginationQuery query)
-            => Ok(await _unitOfWorkService.PostService.GetAllUserLikesPostAsync(postId, query));
+        [HttpGet("{id}/likes")]
+        public async Task<IActionResult> GetAllUserLikesPost([FromRoute] string id, [FromQuery] PaginationQuery query)
+            => Ok(await _unitOfWorkService.PostService.GetAllUserLikesPostAsync(id, query));
+        [HttpGet("{id}/comments")]
+        public async Task<IActionResult> GetAllPostComments([FromRoute] string id, [FromQuery] PaginationQuery query)
+            => Ok(await _unitOfWorkService.PostService.GetAllPostCommentsAsync(id, query));
     }
 }

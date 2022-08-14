@@ -1,4 +1,5 @@
 ﻿using Aniverse.Application.Abstractions.UnitOfWork;
+using Aniverse.Application.DTOs.Comment;
 using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.Post;
 using Aniverse.Application.DTOs.User;
@@ -45,12 +46,27 @@ namespace Aniverse.Services.Implementations
             var post = await _unitOfWork.PostRepository.GetAsync(p => p.Id.ToString() == postId);
             if (post is null)
                 throw new Exception("Post not found");
-            return await _unitOfWork.LikeRepository.GetAllWithSelectAsync(l => new UserGetAll
+            return await _unitOfWork.LikeRepository.GetAllWithSelectAsync(page: query.Page, size: query.Size, l => l.CreatedDate, l => new UserGetAll
             {
                 Firstname = l.User.Firstname,
                 Lastname = l.User.Lastname,
                 UserName = l.User.UserName,
             }, u => u.PostId == post.Id, includes: "User");
+        }
+        public async Task<List<CommentGet>> GetAllPostCommentsAsync(string postId, PaginationQuery query = null)
+        {
+            query ??= new PaginationQuery(1, 5);
+            var post = await _unitOfWork.PostRepository.GetWithSelectAsync(p => new { p.Id }, p => p.Id.ToString() == postId);
+            if (post is null)
+                throw new Exception("Post not found");
+            return await _unitOfWork.CommentRepository.GetAllWithSelectAsync(page: query.Page, size: query.Size, c => c.CreatedDate, c => new CommentGet
+            {
+                Content = c.Content,
+                CreatedDate = c.CreatedDate,
+                ReplyCommentsId = c.ReplyCommentsId,
+                PostId = c.PostId,
+                User = _mapper.Map<UserGetAll>(c.User)
+            }, c => c.PostId == post.Id, includes: "User");
         }
     }
 }
