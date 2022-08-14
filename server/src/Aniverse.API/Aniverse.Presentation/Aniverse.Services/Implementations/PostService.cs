@@ -51,7 +51,6 @@ namespace Aniverse.Services.Implementations
                 Lastname = l.User.Lastname,
                 UserName = l.User.UserName,
             }, u => u.PostId == post.Id, includes: "User");
-
         }
     }
 }

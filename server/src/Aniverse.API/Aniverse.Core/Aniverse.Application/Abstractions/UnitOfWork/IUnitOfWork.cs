@@ -11,6 +11,7 @@ namespace Aniverse.Application.Abstractions.UnitOfWork
         IAnimalFollowRepository AnimalFollowRepository { get; }
         IUserFollowRepository UserFollowRepository { get; }
         ILikeRepository LikeRepository { get; }
+        ICommentRepository CommentRepository { get; }
         Task SaveAsync();
     }
 }
