@@ -30,7 +30,7 @@ namespace Aniverse.API.Controllers
             => Ok(await _unitOfWorkService.UserService.GetLoginAsync());
 
         [HttpPost("{username}/folow")]
-        public async Task<IActionResult> FollowAsync([FromRoute]string username)
+        public async Task<IActionResult> FollowAsync([FromRoute] string username)
         {
             await _unitOfWorkService.UserService.FollowAsync(username);
             return NoContent();
@@ -41,5 +41,6 @@ namespace Aniverse.API.Controllers
             await _unitOfWorkService.UserService.UnfollowAsync(username);
             return NoContent();
         }
+       
     }
 }

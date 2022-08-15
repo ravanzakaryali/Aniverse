@@ -25,14 +25,16 @@ namespace Aniverse.Services.Implementations
         }
         public async Task<List<PostGetDto>> GetAllByUserAsync(string username, PaginationQuery query)
         {
+            query ??= new PaginationQuery(1, 5);
             var user = await _unitOfWork.UserRepository.GetWithSelectAsync(u => new { u.UserName, u.Id }, u => u.NormalizedUserName == username.ToUpper());
             if (user is null)
                 throw new Exception("User not found");
             List<Post> post = await _unitOfWork.PostRepository.GetAllAsync(query.Page, query.Size, p => p.CreatedDate, p => p.UserId == user.Id, tracking: false, includes: "User");
             return _mapper.Map<List<PostGetDto>>(post);
         }
-        public async Task<List<PostGetDto>> GetAllByLoginUserAsync(PaginationQuery query)
+        public async Task<List<PostGetDto>> GetAllByLoginUserAsync(PaginationQuery query = null)
         {
+            query ??= new PaginationQuery(1, 5);
             var userLoginId = _claim.HttpContext.User.GetLoginUserId();
             var user = await _unitOfWork.UserRepository.GetWithSelectAsync(u => new { u.UserName, u.Id }, u => u.Id == userLoginId);
             if (user is null)
@@ -43,7 +45,7 @@ namespace Aniverse.Services.Implementations
         public async Task<List<UserGetAll>> GetAllUserLikesPostAsync(string postId, PaginationQuery query = null)
         {
             query ??= new PaginationQuery(1, 10);
-            var post = await _unitOfWork.PostRepository.GetAsync(p => p.Id.ToString() == postId);
+            var post = await _unitOfWork.PostRepository.GetWithSelectAsync(p => new { p.Id }, p => p.Id.ToString() == postId);
             if (post is null)
                 throw new Exception("Post not found");
             return await _unitOfWork.LikeRepository.GetAllWithSelectAsync(page: query.Page, size: query.Size, l => l.CreatedDate, l => new UserGetAll
@@ -67,6 +69,15 @@ namespace Aniverse.Services.Implementations
                 PostId = c.PostId,
                 User = _mapper.Map<UserGetAll>(c.User)
             }, c => c.PostId == post.Id, includes: "User");
+        }
+        public async Task<List<PostGetWithAnimalDto>> GetAllByAnimalAsync(string animalname, PaginationQuery query = null)
+        {
+            query ??= new PaginationQuery(1, 5);
+            var animal = await _unitOfWork.AnimalRepository.GetWithSelectAsync(a => new { a.Animalname, a.Id }, a => a.NormalizedAnimalname == animalname.ToUpper());
+            if (animal is null)
+                throw new Exception("User not found");
+            List<Post> post = await _unitOfWork.PostRepository.GetAllAsync(query.Page, query.Size, p => p.CreatedDate, p => p.AnimalId == animal.Id, tracking: false, includes: "User");
+            return _mapper.Map<List<PostGetWithAnimalDto>>(post);
         }
     }
 }
