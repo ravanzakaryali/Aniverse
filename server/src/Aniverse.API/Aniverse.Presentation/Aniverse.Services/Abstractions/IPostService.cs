@@ -12,5 +12,6 @@ namespace Aniverse.Services.Abstractions
         Task<List<UserGetAll>> GetAllUserLikesPostAsync(string postId, PaginationQuery query = null);
         Task<List<CommentGet>> GetAllPostCommentsAsync(string postId, PaginationQuery query = null);
         Task<List<PostGetWithAnimalDto>> GetAllByAnimalAsync(string animalname, PaginationQuery query = null);
+        Task CreatePostAsync(PostCreate postCreate);
     }
 }

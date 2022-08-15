@@ -16,7 +16,10 @@ namespace Aniverse.API.Controllers
         }
         [HttpGet("users/{username}/[controller]")] // api/users/revanzli/posts
         public async Task<IActionResult> GetAllByUser([FromRoute] string username, [FromQuery] PaginationQuery query)
-          => Ok(await _unitOfWorkService.PostService.GetAllByUserAsync(username, query));
+            => Ok(await _unitOfWorkService.PostService.GetAllByUserAsync(username, query));
+        [HttpGet("animals/{animalname}/[controller]")] //api/animals/reks/posts
+        public async Task<IActionResult> GetAllByAnimal([FromRoute] string animalname, [FromQuery] PaginationQuery query)
+            => Ok(await _unitOfWorkService.PostService.GetAllByAnimalAsync(animalname, query));
         [HttpGet("users/login/[controller]")] //api/users/login/posts
         public async Task<IActionResult> GetAllByLoginUser([FromQuery] PaginationQuery query)
             => Ok(await _unitOfWorkService.PostService.GetAllByLoginUserAsync(query));
@@ -26,7 +29,12 @@ namespace Aniverse.API.Controllers
         [HttpGet("[controller]/{id}/comments")] //api/posts/{postId}/comments
         public async Task<IActionResult> GetAllPostComments([FromRoute] string id, [FromQuery] PaginationQuery query)
             => Ok(await _unitOfWorkService.PostService.GetAllPostCommentsAsync(id, query));
-        public async Task<IActionResult> GetAllByAnimal([FromRoute] string animalname, [FromQuery] PaginationQuery query)
-            => Ok(await _unitOfWorkService.PostService.GetAllByAnimalAsync(animalname, query));
+        [HttpPost]
+        public async Task<IActionResult> CreatePost([FromForm] PostCreate postCreate)
+        {
+            await _unitOfWorkService.PostService.CreatePostAsync(postCreate);
+            return NoContent();
+        }
+
     }
 }

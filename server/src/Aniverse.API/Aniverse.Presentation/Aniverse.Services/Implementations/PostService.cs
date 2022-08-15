@@ -75,9 +75,22 @@ namespace Aniverse.Services.Implementations
             query ??= new PaginationQuery(1, 5);
             var animal = await _unitOfWork.AnimalRepository.GetWithSelectAsync(a => new { a.Animalname, a.Id }, a => a.NormalizedAnimalname == animalname.ToUpper());
             if (animal is null)
-                throw new Exception("User not found");
+                throw new Exception("Animal not found");
             List<Post> post = await _unitOfWork.PostRepository.GetAllAsync(query.Page, query.Size, p => p.CreatedDate, p => p.AnimalId == animal.Id, tracking: false, includes: "User");
             return _mapper.Map<List<PostGetWithAnimalDto>>(post);
+        }
+        public async Task CreatePostAsync(PostCreate postCreate)
+        {
+            if (postCreate.AnimalId != null)
+            {
+                var animal = await _unitOfWork.AnimalRepository.GetWithSelectAsync(a => new { a.Id }, a => a.Id.ToString() == postCreate.AnimalId);
+                if (animal is null)
+                    throw new Exception("Animal not found");
+            }
+            var userLoginId = _claim.HttpContext.User.GetLoginUserId();
+            Post post = _mapper.Map<Post>(postCreate);
+            post.UserId = userLoginId;
+            await _unitOfWork.PostRepository.AddAsync(post);
         }
     }
 }
