@@ -16,6 +16,10 @@ namespace Aniverse.Persistence.Configuration
                 .HasMany(u => u.FriendRequests)
                 .WithOne(fr => fr.User)
                 .HasForeignKey(fr => fr.UserId);
+            builder
+                .HasMany(u => u.UserFollows)
+                .WithOne(uf => uf.User)
+                .HasForeignKey(u => u.UserId);
         }
     }
 }

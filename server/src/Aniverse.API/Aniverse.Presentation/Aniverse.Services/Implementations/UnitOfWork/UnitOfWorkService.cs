@@ -1,4 +1,5 @@
 ﻿using Aniverse.Application.Abstractions.Services;
+using Aniverse.Application.Abstractions.Storage;
 using Aniverse.Application.Abstractions.UnitOfWork;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Services.Abstractions;
@@ -17,11 +18,12 @@ namespace Aniverse.Services.Implementations.Service
         private readonly ITokenHandler _tokenHandler;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _claims;
+        private readonly IStorageService _storageService;
         public UnitOfWorkService(
             IUnitOfWork unitOfWork,
             ITokenHandler tokenHandler,
             SignInManager<AppUser> signInManager,
-            UserManager<AppUser> userManager, IMapper mapper, IHttpContextAccessor claims)
+            UserManager<AppUser> userManager, IMapper mapper, IHttpContextAccessor claims, IStorageService storageService)
         {
             _unitOfWork = unitOfWork;
             _tokenHandler = tokenHandler;
@@ -29,6 +31,7 @@ namespace Aniverse.Services.Implementations.Service
             _userManager = userManager;
             _mapper = mapper;
             _claims = claims;
+            _storageService = storageService;
         }
         private IAnimalService _animalService;
         private IAuthService _authService;
@@ -42,6 +45,6 @@ namespace Aniverse.Services.Implementations.Service
             _signInManager,
             _tokenHandler);
         public IUserService UserService => _userService ??= new UserService(_unitOfWork, _mapper, _claims);
-        public IPostService PostService => _postService ??= new PostService(_unitOfWork, _mapper, _claims);
+        public IPostService PostService => _postService ??= new PostService(_unitOfWork, _mapper, _claims, _storageService);
     }
 }

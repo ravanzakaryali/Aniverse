@@ -7,8 +7,6 @@ namespace Aniverse.Persistence.Implementations.Repositories
 {
     public class PostRepository : Repository<Post, string>, IPostRepository
     {
-        public PostRepository(AniverseDbContext context) : base(context)
-        {
-        }
+        public PostRepository(AniverseDbContext context) : base(context) { }
     }
 }

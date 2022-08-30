@@ -10,5 +10,6 @@ namespace Aniverse.Persistence.Implementations.Repositories
         public AnimalFollowRepository(AniverseDbContext context) : base(context)
         {
         }
+
     }
 }

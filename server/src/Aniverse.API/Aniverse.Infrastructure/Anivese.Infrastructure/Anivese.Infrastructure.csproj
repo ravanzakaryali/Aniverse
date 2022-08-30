@@ -10,4 +10,12 @@
     <ProjectReference Include="..\..\Aniverse.Core\Aniverse.Application\Aniverse.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Enum\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.13.1" />
+  </ItemGroup>
+
 </Project>

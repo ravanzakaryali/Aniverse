@@ -9,11 +9,15 @@
             get { return _size; }
             set
             {
-                if (value < 1000)
+                if (value <= 1000)
                     _size = value;
                 else
                     throw new Exception("Max value 1000");
             }
+        }
+        public PaginationQuery()
+        {
+
         }
         public PaginationQuery(int page, int size)
         {

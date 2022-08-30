@@ -28,6 +28,7 @@ namespace Aniverse.Services.Implementations
 
         public async Task<CreateUserResponse> RegisterAsync(Register register)
         {
+            
             return await _unitOfWork.UserRepository.CreateAsync(register);
         }
 

@@ -7,5 +7,7 @@ namespace Aniverse.Domain.Entities
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Storage { get; set; }
+        public string ContainerName { get; set; }
+        public string FileName { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Aniverse.Persistence.Context
 {
     public class AniverseDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
-        public AniverseDbContext(DbContextOptions options) : base(options) { }
+        public AniverseDbContext(DbContextOptions<AniverseDbContext> options) : base(options) { }
         public DbSet<Animal> Animals { get; set; }
         public DbSet<AnimalFollow> AnimalFollows { get; set; }
         public DbSet<Comment> Comments { get; set; }

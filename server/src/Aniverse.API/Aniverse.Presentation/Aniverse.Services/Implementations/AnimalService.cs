@@ -3,6 +3,7 @@ using Aniverse.Application.DTOs.Animal;
 using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.User;
 using Aniverse.Application.Extensions;
+using Aniverse.Application.Statics;
 using Aniverse.Domain.Entities;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Services.Abstractions;
@@ -73,7 +74,7 @@ namespace Aniverse.Services.Implementations
         #region GenerateUsernameAnimal
         private async Task<string> GenerateAnimalnameAsync(string fullname, int maxLenght = 10)
         {
-            string animalname = (fullname.CharacterRegulatory() + Guid.NewGuid().ToString("N"))[..maxLenght];
+            string animalname = (StringHelper.CharacterRegulatory(fullname) + Guid.NewGuid().ToString("N"))[..maxLenght];
             Animal isAnimalname = await _unitOfWork.AnimalRepository.GetAsync(a => a.Animalname == animalname);
             if (isAnimalname != null)
             {

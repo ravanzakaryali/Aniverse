@@ -2,6 +2,7 @@
 using Aniverse.Application.DTOs.Auth;
 using Aniverse.Application.DTOs.User;
 using Aniverse.Application.Extensions;
+using Aniverse.Application.Statics;
 using Aniverse.Core.Repositories.Abstraction;
 using Aniverse.Domain.Entities.Identity;
 using Aniverse.Persistence.Context;
@@ -63,7 +64,7 @@ namespace Aniverse.Persistence.Implementations.Repositories
         }
         private async Task<string> GenerateUsernameAsync(string fullname, int maxLenght = 20)
         {
-            string username = (fullname.CharacterRegulatory() + Guid.NewGuid().ToString("N"))[..maxLenght];
+            string username = (StringHelper.CharacterRegulatory(fullname) + Guid.NewGuid().ToString("N"))[..maxLenght];
             AppUser isUserName = await _userManager.FindByNameAsync(username);
             if (isUserName != null)
             {

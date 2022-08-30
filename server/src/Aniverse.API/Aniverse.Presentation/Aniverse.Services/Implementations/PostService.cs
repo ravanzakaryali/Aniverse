@@ -1,6 +1,8 @@
-﻿using Aniverse.Application.Abstractions.UnitOfWork;
+﻿using Aniverse.Application.Abstractions.Storage;
+using Aniverse.Application.Abstractions.UnitOfWork;
 using Aniverse.Application.DTOs.Comment;
 using Aniverse.Application.DTOs.Common;
+using Aniverse.Application.DTOs.File;
 using Aniverse.Application.DTOs.Post;
 using Aniverse.Application.DTOs.User;
 using Aniverse.Application.Extensions;
@@ -8,20 +10,24 @@ using Aniverse.Domain.Entities;
 using Aniverse.Services.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
+using System.Diagnostics;
 
 namespace Aniverse.Services.Implementations
 {
     public class PostService : IPostService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        public readonly IHttpContextAccessor _claim;
+        readonly IUnitOfWork _unitOfWork;
+        readonly IMapper _mapper;
+        readonly IHttpContextAccessor _claim;
+        readonly IStorageService _storageService;
 
-        public PostService(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor claim)
+        public PostService(IUnitOfWork unitOfWork, IMapper mapper, IHttpContextAccessor claim, IStorageService storageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _claim = claim;
+            _storageService = storageService;
         }
         public async Task<List<PostGetDto>> GetAllByUserAsync(string username, PaginationQuery query)
         {
@@ -89,8 +95,22 @@ namespace Aniverse.Services.Implementations
             }
             var userLoginId = _claim.HttpContext.User.GetLoginUserId();
             Post post = _mapper.Map<Post>(postCreate);
-            post.UserId = userLoginId;
+            List<FileUploadResponse> response =
+                await _storageService.UploadAsync(postCreate.ImageFiles, "aniversefiles", _claim.HttpContext.User.GetLoginUserName());
+            PostImagesAdd(post, response);
             await _unitOfWork.PostRepository.AddAsync(post);
+        }
+        private void PostImagesAdd(Post post, List<FileUploadResponse> response)
+        {
+            for (int i = 0; i < response.Count; i++)
+            {
+                post.PostImages.Add(new PostImages()
+                {
+                    ContainerName = response[i].ContainerName,
+                    FileName = response[i].FileName,
+                    Storage = "Azure",
+                });
+            }
         }
     }
 }

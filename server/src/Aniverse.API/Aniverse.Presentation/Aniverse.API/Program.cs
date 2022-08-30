@@ -4,6 +4,10 @@ using Aniverse.Application.Mappers;
 using Aniverse.Application.Validators.Auth;
 using Aniverse.Persistence;
 using Aniverse.Services;
+using Aniverse.Services.Abstractions.UnitOfWork;
+using Aniverse.Services.Implementations.Service;
+using Anivese.Infrastructure;
+using Anivese.Infrastructure.Services.Storage.Azure;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.HttpLogging;
 using NpgsqlTypes;
@@ -31,6 +35,7 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
+
 
 builder.Host.UseSerilog();
 
@@ -61,9 +66,13 @@ builder.Services.AddControllers()
                 .AddFluentValidation(fl => fl.RegisterValidatorsFromAssemblyContaining<RegisterValidator>());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddInfrastructureServices();
 builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
 builder.Services.AddApplicationService();
 builder.Services.AddMapperService();
+
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();

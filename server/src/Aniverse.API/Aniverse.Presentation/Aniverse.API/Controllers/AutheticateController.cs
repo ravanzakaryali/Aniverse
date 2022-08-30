@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aniverse.API.Controllers
 {
-    [ApiController,Route("api/[controller]")]
+    [ApiController, Route("api/[controller]")]
     public class AutheticateController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWorkService;
@@ -19,7 +19,7 @@ namespace Aniverse.API.Controllers
             => Ok(await _unitOfWorkService.AuthService.RegisterAsync(register));
 
         [HttpPost("login")]
-        public async Task<ActionResult> LoginAsync([FromForm] Login login)
+        public async Task<ActionResult> LoginAsync([FromBody] Login login)
             => Ok(await _unitOfWorkService.AuthService.LoginAsync(login));
 
         [HttpPost("refresh-token")]

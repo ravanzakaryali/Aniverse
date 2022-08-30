@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Aniverse.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
+    [ApiController, Route("api/[controller]"), Authorize]
     public class AnimalsController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWorkService;

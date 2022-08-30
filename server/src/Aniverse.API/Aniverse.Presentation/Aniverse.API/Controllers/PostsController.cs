@@ -1,11 +1,12 @@
 ﻿using Aniverse.Application.DTOs.Common;
 using Aniverse.Application.DTOs.Post;
 using Aniverse.Services.Abstractions.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aniverse.API.Controllers
 {
-    [ApiController, Route("api/")]
+    [ApiController, Route("api/"),Authorize]
     public class PostsController : ControllerBase
     {
         private readonly IUnitOfWorkService _unitOfWorkService;
@@ -29,7 +30,7 @@ namespace Aniverse.API.Controllers
         [HttpGet("[controller]/{id}/comments")] //api/posts/{postId}/comments
         public async Task<IActionResult> GetAllPostComments([FromRoute] string id, [FromQuery] PaginationQuery query)
             => Ok(await _unitOfWorkService.PostService.GetAllPostCommentsAsync(id, query));
-        [HttpPost]
+        [HttpPost("[controller]/create")]
         public async Task<IActionResult> CreatePost([FromForm] PostCreate postCreate)
         {
             await _unitOfWorkService.PostService.CreatePostAsync(postCreate);
