@@ -47,7 +47,7 @@ namespace Aniverse.Persistence.Implementations.Repositories.Base
                 query = Table.AsNoTracking();
             return where is null
                 ? isOrderBy
-                    ? await query.Skip((page - 1) * size).Take(size).ToListAsync()
+                    ? await query.OrderBy().Skip((page - 1) * size).Take(size).ToListAsync()
                     : await query.OrderByDescending(orderBy).Skip((page - 1) * size).Take(size).ToListAsync()
                 : isOrderBy
                     ? await query.Where(where).Skip((page - 1) * size).Take(size).ToListAsync()

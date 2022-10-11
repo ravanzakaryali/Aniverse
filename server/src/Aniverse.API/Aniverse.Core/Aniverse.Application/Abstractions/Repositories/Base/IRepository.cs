@@ -4,6 +4,8 @@ namespace Aniverse.Core.Repositories.Abstraction.Base
 {
     public interface IRepository<TEntity, TKey> where TEntity : class, new()
     {
+
+
         Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null,
                                 bool tracking = true,
                                 params string[] includes);

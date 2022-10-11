@@ -10,8 +10,6 @@ using Aniverse.Domain.Entities;
 using Aniverse.Services.Abstractions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
-using System.Diagnostics;
 
 namespace Aniverse.Services.Implementations
 {
@@ -35,7 +33,7 @@ namespace Aniverse.Services.Implementations
             var user = await _unitOfWork.UserRepository.GetWithSelectAsync(u => new { u.UserName, u.Id }, u => u.NormalizedUserName == username.ToUpper());
             if (user is null)
                 throw new Exception("User not found");
-            List<Post> post = await _unitOfWork.PostRepository.GetAllAsync(query.Page, query.Size, p => p.CreatedDate, p => p.UserId == user.Id, tracking: false, includes: "User");
+            List<Post> post = await _unitOfWork.PostRepository.GetAllAsync(query.Page, query.Size, orderBy: p => p.CreatedDate, p => p.UserId == user.Id, true, true, "User");
             return _mapper.Map<List<PostGetDto>>(post);
         }
         public async Task<List<PostGetDto>> GetAllByLoginUserAsync(PaginationQuery query = null)
@@ -95,6 +93,7 @@ namespace Aniverse.Services.Implementations
             }
             var userLoginId = _claim.HttpContext.User.GetLoginUserId();
             Post post = _mapper.Map<Post>(postCreate);
+            post.UserId = userLoginId;
             List<FileUploadResponse> response =
                 await _storageService.UploadAsync(postCreate.ImageFiles, "aniversefiles", _claim.HttpContext.User.GetLoginUserName());
             PostImagesAdd(post, response);

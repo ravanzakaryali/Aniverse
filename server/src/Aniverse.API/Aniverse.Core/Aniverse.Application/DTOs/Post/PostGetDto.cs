@@ -1,5 +1,6 @@
 ﻿using Aniverse.Application.DTOs.HasTag;
 using Aniverse.Application.DTOs.User;
+using Aniverse.Domain.Entities;
 
 namespace Aniverse.Application.DTOs.Post
 {
@@ -12,5 +13,6 @@ namespace Aniverse.Application.DTOs.Post
         public int CommentCount { get; set; }
         public int ShareCount { get; set; }
         public List<HasTagGet> HasTags { get; set; }
+        public List<PostImages> PostImages { get; set; }
     }
 }
